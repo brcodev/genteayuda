@@ -1,0 +1,101 @@
+<?php include_once __DIR__ . '/../layout/header.php'; ?>
+
+
+<div class="hero-inscripcion">
+    <div class="hero-text">
+        <h1>Te invitamos a que inscribas tu organización social, de esta manera mas posibilidad de otorgar ayuda a quien la necesite.
+            Comparte con quien puedas para que mas se sumen a esta iniciativa &hearts;</h1>
+    </div>
+    <div class="contenido-hero-info">
+        <?php include_once __DIR__ . '/formOrg.php'; ?>
+    </div>
+</div>
+<div class="hero-form-claim parallax">
+    <div class="hero-text-claim">
+        <h1>Realiza tu sugerencia o reclamo, asi nos ayudas a mejorar y corregir errores.</h1>
+    </div>
+    <div class="contenido-hero-info" style="grid-area: sidebar;">
+
+        <div class="formbold-main-wrapper contacto-ins">
+            <div class="">
+                <form role="form" name="contactSent" id="contactSent" method="POST" action="<?= SERVERURL ?>visita/sclaim">
+                    <div class="formbold-input-flex">
+                        <div>
+                            <label for="nombre" class="formbold-form-label">Nombre</label>
+                            <input type="text" name="nombre" placeholder="Nombre" maxlength="50" class="formbold-form-input" />
+                        </div>
+                        <div>
+                            <label for="apellido" class="formbold-form-label">Apellido</label>
+                            <input type="text" name="apellido" placeholder="Apellido" maxlength="50" class="formbold-form-input" />
+                        </div>
+                    </div>
+
+                    <div class="formbold-input-group">
+                        <div>
+                            <label for="mail" class="formbold-form-label">Correo</label>
+                            <input type="email" name="mail" placeholder="mail" maxlength="100" class="formbold-form-input" />
+                        </div>
+                    </div>
+
+                    <div class="formbold-input-radio-wrapper">
+                        <label for="tipo" class="formbold-form-label"> Marque según el tipo de mensaje que desea enviar. </label>
+
+                        <div class="formbold-radio-flex-m">
+                            <div class="formbold-radio-group">
+                                <label class="formbold-radio-label">
+                                    <input class="formbold-input-radio" type="radio" name="tipo" value="1">
+                                    Sugerencia.
+                                    <span class="formbold-radio-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="formbold-radio-group">
+                                <label class="formbold-radio-label">
+                                    <input class="formbold-input-radio" type="radio" name="tipo" value="2">
+                                    Reclamo.
+                                    <span class="formbold-radio-checkmark"></span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="message" class="formbold-form-label"> Mensaje: </label>
+                        <textarea rows="6" name="mensaje" placeholder="Deja tu mensaje" class="formbold-form-input"></textarea>
+                    </div>
+
+                    <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                    <button class="formbold-btn">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="contact-footer">
+        <ul class="social-icon" style="margin-top: 6rem; text-align:center; padding: 0">
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <i class="fa-brands fa-facebook-f" style="color:<?= $a ?>"></i>
+                </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <i class="fa-brands fa-twitter" style="color:<?= $a ?>"></i>
+                </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <i class="fa-brands fa-instagram" style="color:<?= $a ?>"></i>
+                </a></li>
+        </ul>
+
+        <ul class="menu" style=" text-align:center; padding: 0">
+
+            <li class="menu__item"><a class="menu__link" href="<?= SERVERURL ?>nosotros">Nosotros</a></li>
+            <li class="menu__item"><a class="menu__link" href="<?= SERVERURL ?>categorias">Ayudas</a></li>
+            <li class="menu__item"><a class="menu__link" href="<?= SERVERURL ?>contacto">Contacto</a></li>
+            <li class="menu__item"><a class="menu__link" href="<?= SERVERURL ?>eventos">Eventos</a></li>
+
+        </ul>
+        <p class="menu__item" style="text-align: center;"><a class="menu__link" href="<?= SERVERURL ?>">GENTEAYUDA</a></p>
+    </div>
+</div>
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>

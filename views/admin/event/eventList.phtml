@@ -1,0 +1,113 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Listado de Eventos</h1>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Maneja las organizaciones inscritas</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="registros" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Titulo</th>
+                    <th>fecha de realización</th>
+                    <th>Dirección</th>
+                    <th>Hora</th>
+                    <th>Zona</th>
+                    <th>ayuda</th>
+                    <th>Organización</th>
+                    <th>Teléfono</th>
+                    <th>Creación</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tBody">
+                  <?php
+
+
+                  foreach ($event as $evento) : ?>
+
+                    <tr> 
+                      <td><?= $evento->nombre_evento; ?> </td> 
+                      <td><?= $evento->fecha_evento ?></td>
+                      <td><?= $evento->direccion_evento ?></td>
+                      <td><?= $evento->hora_evento ?></td>
+                      <td><?= $evento->zona ?></td>
+                      <td><?= $evento->cat_ayuda ?></td>
+                      <td><a class="list-link" href="<?= SERVERURL ?>pagemanagephatuser/org/<?= $evento->id_org . "/" . URLify::filter($evento->nombre_organizacion) ?>"><?= $evento->nombre_organizacion ?></a></td>
+                      <td><?= $evento->telefono_org ?></td>
+                      <td><?= date("d-m-Y H:i", strtotime($evento->creation_date)) ?></td>
+                      <td>
+                        <a href="<?= SERVERURL ?>pagemanagephatuser/event/<?= $evento->id ?>/<?= URLify::filter($evento->nombre_evento) ?>" class="btn btn-flat margin">
+                          <i class="far fa-edit"></i>
+                        </a>
+                        <a href="<?= SERVERURL ?>pagemanagephatuser/event/delete" data-id="<?= $evento->path ?>" data-tipo="event" data-user="<?= $evento->nombre_evento ?>" data-tkn="<?= $csrf ?>" class="btn btn-flat margin borrar_registro ">
+                          <i class="far fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+
+                  <?php endforeach; ?>
+
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Titulo</th>
+                    <th>fecha de realización</th>
+                    <th>Dirección</th>
+                    <th>Hora</th>
+                    <th>Zona</th>
+                    <th>ayuda</th>
+                    <th>Organización</th>
+                    <th>Teléfono</th>
+                    <th>Creación</th>
+                    <th>Acciones</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+</div>
+<!-- /.content-wrapper -->
+
+
+<script type="text/javascript">
+ $(document).on("click",".borrar_registro",function(e){e.preventDefault();var t=$(this).attr("data-id"),a=$(this).attr("data-tipo"),e=$(this).attr("data-user"),n=$(this).attr("data-image"),o=$(this).attr("data-tkn"),r=$("#tBody"),e="¿Estas Seguro que deseas ELIMINAR el evento : "+e+"?";Swal.fire({title:e,text:"Un evento eliminado no se puede recuperar!",icon:"warning",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"Si, ELIMINAR!",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&$.ajax({type:"post",data:{nameImg:n,id:t,csrf:o},url:"https://genteayuda.site/pagemanagephatuser/"+a+"/delete",success:function(e){e=JSON.parse(e);e.result?(jQuery('[data-id="'+e.user+'"]').parents("tr").remove(),jQuery('[data-image="'+e.image+'"]').parent().remove(),Swal.fire("Eliminado!","El evento ha sido eliminado","success"),0==r.children().length&&window.location.reload()):Swal.fire({icon:"error",title:"Error",text:"No se pudo eliminar el evento, intente nuevamente o contacte al administrador"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})});
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

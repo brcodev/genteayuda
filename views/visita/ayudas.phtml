@@ -1,0 +1,24 @@
+<?php include_once __DIR__ . '/../layout/header.php'; ?>   
+
+
+<div class="hero-contacto" style="margin-top: 1rem;">
+    <div class="contenido-hero-info">
+        <h1>Información de contacto de Ayudas Sociales</h1>
+    </div>
+</div>
+<div class="con-ayuda">
+    <?php
+        foreach($categorias as $key => $categoria): ?>
+            <a class="categorias" href="ayuda/<?= $categoria->cat_ayuda ?>">
+            <div class="categoria">
+
+                <h2><?= $categoria->cat_ayuda ?></h2>
+                <i class="<?= $categoria->icono ?> icono-categoria"></i>
+
+            </div>
+        </a>
+    <?php endforeach; ?>
+
+</div>
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>   

@@ -1,0 +1,130 @@
+<?php
+
+use Classes\Utils;
+use Model\Organizacion;
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+   <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Listado de Organizaciones</h1>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Administra las organizaciones publicadas</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="registros" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Región</th>
+                    <th>Dirección</th>
+                    <th>Ayuda entregada</th>
+                    <th>Zona</th>
+                    <th>Publicación</th>
+                    <th>Organización a cargo</th>
+                    <th>Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody id="tBody">
+                    <?php
+                      
+                      foreach($org as $organizacion):
+                            $ayuda = Utils::typeToString($organizacion->id_ayuda_entregada);
+
+                            $zona;
+                            switch ($organizacion->org_zona_id) {
+                                case 1:
+                                    $zona = "Norte";
+                                    break;
+                                case 2:
+                                    $zona = "Centro";
+                                    break;
+                                case 3:
+                                    $zona = "Sur";
+                                    break;
+                            }
+
+                        ?>
+                      
+                        <tr> 
+                          <td><?= $organizacion->nombre_organizacion ; ?> </td> 
+                          <td><?= $organizacion->correo_org ?></td> 
+                          <td><?= $organizacion->region ?></td>
+                          <td><?= $organizacion->direccion_org ?></td>
+                          <td><?= $ayuda ?></td>
+                          <td><?= $zona ?></td>
+                          <td><?= date("d-m-Y H:i", strtotime($organizacion->fecha_creacion_org)) ?></td>
+                          <td> <a class="list-link" href="<?=SERVERURL?>pagemanagephatuser/orgrequest/<?= $organizacion->id_registered ?>" ><?= $organizacion->org_name ?></a> </td>
+                          <td>
+                            <a href="<?=SERVERURL?>pagemanagephatuser/org/<?= $organizacion->id ?>/<?= URLify::filter($organizacion->nombre_organizacion) ?>" class="btn btn-flat margin">
+                              <i class="far fa-edit"></i>
+                            </a>
+                            <a href="<?=SERVERURL?>pagemanagephatuser/org/delete" data-id="<?= $organizacion->nombre_organizacion; ?>" data-tipo="org" data-user="<?= $organizacion->nombre_organizacion ; ?>" data-tkn="<?=$csrf?>" class="btn btn-flat margin borrar_registro ">
+                              <i class="far fa-trash-alt"></i>
+                            </a>
+                          </td>   
+                        </tr>
+
+                   <?php  endforeach; ?>
+                    
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Región</th>
+                    <th>Dirección</th>
+                    <th>Ayuda entregada</th>
+                    <th>Zona</th>
+                    <th>Publicación</th>
+                    <th>Organización a cargo</th>
+                    <th>Acciones</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <script type="text/javascript">
+
+    $(document).ready(function(){$(document).on("click",".borrar_registro",function(e){e.preventDefault();const a=$("#myframe");var t=a.contents().find(".imgbuts"),n=$(this).attr("data-id"),i=$(this).attr("data-tipo"),o=$(this).attr("data-user"),r=$(this).attr("data-image"),d=$(this).attr("data-tkn"),e="¿Estas Seguro que deseas ELIMINAR registro: "+o+"?",s=$("#tBody"),e="¿Estas Seguro que deseas ELIMINAR la organización : "+o+"?";Swal.fire({title:e,text:"Una organización eliminada no se puede recuperar!",icon:"warning",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"Si, ELIMINAR!",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&$.ajax({type:"post",data:{nameImg:r,id:n,csrf:d},url:"https://genteayuda.site/pagemanagephatuser/"+i+"/delete",success:function(e){e=JSON.parse(e);e.result?(jQuery('[data-id="'+e.user+'"]').parents("tr").remove(),jQuery('[data-image="'+e.image+'"]').parent().remove(),t.attr("disabled",!1),Swal.fire("Eliminado!","La organización ha sido eliminada","success"),0==s.children().length&&window.location.reload()):Swal.fire({icon:"error",title:"Error",text:"No se pudo eliminar la organización, puede que tenga un evento asociado, intente nuevamente eliminando el evento asociado o contacte al administrador"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})})});                         
+
+  </script>
+
+<?php  include_once __DIR__ . '/../templates/footer.php'; ?>

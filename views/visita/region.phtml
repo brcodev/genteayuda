@@ -1,0 +1,77 @@
+<?php
+
+use Classes\Utils;
+
+ include_once __DIR__ . '/../layout/header.php';
+$slider_off;
+
+?>   
+
+<div class="hero-contacto">
+  <div class="contenido-hero">
+    <h1 class="nombre-evento" data-page="data" catID="<?= $categoria ?>"> Ayuda <?= $categoria ?></h1>
+  </div>
+</div>
+
+
+<div class="zona-movil"><h2 class="load-more"> <a href="<?= SERVERURL ?>ayuda/Alimentaria"> Volver atrás </a></h2></div>
+    <h1 class="region-h1"> <?= $region ?> </h1>
+</div>
+
+  <div class="region">
+    <form>
+        <input class="chosen-value" type="text" value="" placeholder="Buscar Región">
+        <ul class="value-list">
+          <?php foreach($regiones as $rg) : ?>
+            <a href="<?=SERVERURL?>ayuda/Alimentaria/<?= $rg->id ?>"><li><?= $rg->region ?></li></a>
+          <?php endforeach; ?>
+        </ul>
+      </form>
+  </div> 
+  
+  <?php if(empty($org)): ?>
+    
+    <h1 class="region-h1" style="text-align: center; margin-bottom: 5rem" > No se encontraron organizaciones en la región <?= Utils::regionesPre($region_id) ?> </h1>
+
+  <?php endif; ?>
+
+<div class="contenedor-evento tres-columnas post-list" id="postList">
+
+  </section>
+
+    <?php
+   
+    foreach ($org as $key => $organizacion) {  
+          $postID = $organizacion->id;
+          $name = $organizacion->nombre_organizacion;
+          $name_replaced = URLify::filter($name);
+          //$name_replaced = str_replace(" ", "-", $name); ?>
+
+            <article class="entrada-blog">
+                <h2><?=$organizacion->nombre_organizacion ?></h2>
+                <img src="<?=SERVERURL.$organizacion->folder_path.$organizacion->url_imagen;?>" alt="Imagen Organizacion">
+                <p><i class="<?=$organizacion->icono ?>"></i>Ayuda entregada: <?=$organizacion->cat_ayuda ?> </p>
+                <p><i class="fas fa-lg fa-building"></i> Dirección: <?= $organizacion->direccion_org; ?></p>
+                <p><i class="fas fa-lg fa-phone"></i> teléfono: <?= $organizacion->telefono_org; ?></p>
+                <p><i class="fas fa-at"></i> <?= $organizacion->correo_org; ?></p>
+                <a href="<?= SERVERURL;?>organizacion/<?= $name_replaced?>?e=<?= $organizacion->id ?>">Ver Organización</a>
+            </article>
+
+    <?php } ?>
+
+ 
+  
+</div>
+
+<script>
+
+$(window).bind("pageshow", function(event) {
+  if (event.originalEvent.persisted) {
+      window.location.reload(); 
+  }
+});
+
+
+</script>
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>   

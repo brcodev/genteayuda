@@ -1,0 +1,214 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Editar Organización.</h1>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Edita información publicada de la organización social <?= $user->nombre_organizacion ?></h3>
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fas fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="card-header">
+          <h3 class="card-title">Rellena el formulario para editar los datos de la Organización, los campos con * son obligatorios.</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" name="save_reg" id="save_reg" method="post" action="<?= SERVERURL ?>pagemanagephatuser/org/<?= $user->id ?>/<?= URLify::filter($user->nombre_organizacion) ?>" enctype="multipart/form-data">
+          <div class="card-body">
+          <div class="form-group">
+              <label for="nombre">Organización inscrita a cargo*</label>
+              <input type="text" class="form-control" value="<?= $ins_org->org_name ?>" disabled>
+            </div>
+            <div class="form-group">
+              <label for="nombre">Nombre Organización*</label>
+              <input type="text" class="form-control" id="nombre_org" name="nombre_organizacion" value="<?= $user->nombre_organizacion ?>" disabled>
+            </div>
+            <div class="form-group">
+              <label>Correo Organización*</label>
+              <input type="email" class="form-control" id="correo_org" name="correo_org" value="<?= $user->correo_org ?>" required>
+            </div>
+            <div class="form-group">
+              <label>Teléfono Organización</label>
+              <input type="text" class="form-control" id="telefono_org" name="telefono_org" pattern="[0-9]{9}" value="<?= $user->telefono_org == 'Sin teléfono registrado.' ? '' : $user->telefono_org ?>">
+            </div>
+            <div class="form-group">
+              <label for="ayuda">Región*</label>
+              <select class="form-control select2" style="width: 100%;" name="id_region" id="reg_org" required>
+                <option value=""> -- Seleccione --</option>
+
+                <?php
+               
+                $actual_region = $user->id_region;
+                foreach ($regiones as $region) :
+                  if ($region->id == $actual_region) : ?>
+
+                    <option value="<?= $region->id ?>" selected>
+                      <?= $region->region; ?>
+                    </option>
+
+                  <?php else : ?>
+                    <option value="<?= $region->id ?>">
+                      <?= $region->region; ?>
+
+                    </option>
+
+                <?php endif;
+
+                endforeach; ?>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Dirección Organización</label>
+              <input type="text" class="form-control" id="direccion_org" name="direccion_org" value="<?= $user->direccion_org == 'Sin dirección registrada.' ? '' : $user->direccion_org ?>">
+            </div>
+
+            <div class="form-group">
+              <label for="ayuda">Categoría Ayuda*</label>
+              <select class="form-control select2" style="width: 100%;" name="id_ayuda_entregada" id="cat_ayuda" required>
+                <option value="" selected="selected">- Seleccione -</option>
+                <?php
+                
+                $actual_cat = $user->id_ayuda_entregada;
+                foreach ($cat_ayuda as $cat) :
+                  if ($cat->id == $actual_cat) : ?>
+
+                    <option value="<?= $cat->id ?>" selected>
+                      <?= $cat->cat_ayuda; ?>
+                    </option>
+
+                  <?php else : ?>
+                    <option value="<?= $cat->id ?>">
+                      <?= $cat->cat_ayuda; ?>
+
+                    </option>
+
+                <?php endif;
+
+                endforeach; ?>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Perfil de Instagram</label>
+              <input type="text" class="form-control" id="in_link" name="in_link" value="<?= $user->in_link ?>">
+            </div>
+            <div class="form-group">
+              <label>Perfil de Facebook</label>
+              <input type="text" class="form-control" id="fb_link" name="fb_link" value="<?= $user->fb_link ?>">
+            </div>
+            <div class="form-group">
+              <label>Perfil de Twitter</label>
+              <input type="text" class="form-control" id="tw_link" name="tw_link" value="<?= $user->tw_link ?>">
+            </div>
+
+
+            <label for="descripcion">Descripción Organización*</label>
+            <textarea id="summernote" name="descripcion_organizacion"><?= $user->descripcion_organizacion ?></textarea>
+
+            <label>Imágenes Actuales</label>
+
+            <div class="galeria-img">
+
+              <?php
+
+              $dir_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $user->folder_path;
+              $dir_url = SERVERURL . $user->folder_path;
+              $urlpath = SERVERURL . "pagemanagephatuser/img/delete";
+              $extensions_array = array('jpg', 'png', 'jpeg');
+
+              if (is_dir($dir_path)) {
+                $files = scandir($dir_path);
+
+                for ($i = 0; $i < count($files); $i++) {
+                  if ($files[$i] != '.' && $files[$i] != '..') {
+                    
+                    $file = pathinfo($files[$i]);
+                    $extension = $file['extension'];
+                   
+                    if (in_array($extension, $extensions_array)) {
+                      if ($files[$i] == $user->url_imagen) {
+                        echo "<div class='con-imagen'><a href='$dir_url$files[$i]' data-lightbox='roadtrip' class='previos'> <img src='$dir_url$files[$i]' class='previos'></a>
+                      <a href='$urlpath' data-id='$user->nombre_organizacion' data-tkn='$csrf' data-tipo='img' data-image='$files[$i]' class='suggested-posts-article btn btn-flat margin borrar_registro'><i class='far fa-trash-alt'></i></a>
+                      <a href='#' data-id='$user->nombre_organizacion' data-profile='$files[$i]' data-tipo='img' data-tkn='$csrf' data-image='$files[$i]' class='btn btn-flat margin select_imgProfile actual_image'><i class='far fa-user-circle' title='Imagen Principal actual'></i></a></div>";
+                      } else {
+                      
+                        echo "<div class='con-imagen'><a href='$dir_url$files[$i]' data-lightbox='roadtrip' class='previos'> <img src='$dir_url$files[$i]' class='previos'></a>
+                      <a href='$urlpath' data-id='$user->nombre_organizacion' data-tkn='$csrf' data-tipo='img' data-image='$files[$i]' class='suggested-posts-article btn btn-flat margin borrar_registro'><i class='far fa-trash-alt'></i></a>
+                      <a href='#' data-id='$user->nombre_organizacion' data-profile='$files[$i]' data-tipo='img' data-tkn='$csrf' data-image='$files[$i]' class='btn btn-flat margin select_imgProfile'><i class='far fa-user-circle' title='Establecer como imagen principal'></i></a></div>";
+                       
+                      }
+                    }
+                  }
+                }
+              }
+
+              ?>
+
+            </div>
+
+            <div class="form-group">
+              <label>Subir imágenes de la Organización</label>
+              <div>
+                <iframe id='myframe' src="<?= SERVERURL ?>upload/images/<?php echo str_replace(' ', '-', $user->nombre_organizacion) ?>" frameborder='0' scrolling='no' width="900px" height="400px" style="overflow:auto;"></iframe>
+              </div>
+
+            </div>
+
+            <div class="">
+              <hr>
+
+              <input type="hidden" name="csrf" value="<?= $csrf ?>">
+              <button type="submit" id="org_edit" class="btn btn-primary">Actualizar</button>
+        </form>
+
+      </div>
+      <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script>
+  function isEmail(e){return/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e)}$(document).ready(function(){$("#crear_registro").attr("disabled",!0);$("#reg_org, #cat_ayuda, #summernote, #registered, input[type=text], input[type=email]").on("change keyup summernote.keyup",function(){var e=$("nombre_org"),t=$("#correo_org").val(),a=$("#reg_org").val(),i=$("#cat_ayuda").val(),r=isEmail(t);$("#myframe");noDesc=!!$("#summernote").summernote("isEmpty"),""!=e&&0<a&&""!=t&&noDesc,""!=e&&0<a&&""!=t&&!noDesc&&r&&0<i?$("#org_edit").attr("disabled",!1):($("#crear_registro").attr("disabled",!0),$("#org_edit").attr("disabled",!0))}),$("#save_reg").on("submit",function(e){e.preventDefault();$(this).attr("#fileImg");const t=$("#myframe"),a=t.contents().find(".upload-btn");setTimeout(function(){a.click()},1e3);var i=$(".suggested-posts-article").map(function(){return $(this).data("image")}).get(),e=t.contents().find(".posts_article").map(function(){return $(this).data("base")}).get();4<e.length+i.length?alert("Solo puedes subir 4 imágenes como máximo, debes eliminar "+(e.length+i.length-4)+".").then(()=>{setTimeout(()=>{window.location.reload()},100)}):e.length+i.length<1?Swal.fire({icon:"warning",title:"Debes subir una imagen",text:"Se requiere como mínimo una imagen"}):(i=new FormData(this),$.ajax({type:$(this).attr("method"),data:i,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){console.log(e),("exito"==e.respuesta||"update"==e.result||e.result?Swal.fire({icon:"success",title:"Registro guardado",text:"Los datos se han guardado"}):"completar"==e.respuesta?Swal.fire({icon:"error",title:"Complete los datos",text:"Todos los campos son obligatorios, exceptuando la imagen"}):Swal.fire({icon:"error",title:"Ocurrió un error ",text:"Recargue la pagina y reinténtelo, o de aviso al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}}))}),$(document).on("click",".select_imgProfile",function(e){e.preventDefault();var t=$(this).attr("data-tkn"),a=$(this).attr("data-image"),i=$(this).attr("data-id");Swal.fire({title:"¿Establecer como imagen principal?",text:"Se establecerá como imagen principal",icon:"warning",showCancelButton:!0,confirmButtonColor:"#3085d6",cancelButtonColor:"#d33",confirmButtonText:"Si",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&(Swal.fire("Imagen principal establecida","Imagen Actualizada","success"),$.ajax({type:"post",data:{csrf:t,selectImage:a,nameOrg:i,profile:"update"},url:"https://genteayuda.site/upload/images",success:function(e){e=JSON.parse(e);e.update?($("div.galeria-img").find(".select_imgProfile").removeClass("actual_image"),$("div.galeria-img").find(".fa-user-circle").attr("title","Establecer como imagen principal"),jQuery('[data-profile="'+e.data+'"]').addClass("actual_image"),jQuery('[data-profile="'+e.data+'"]').find(".fa-user-circle").attr("title","Imagen principal actual")):Swal.fire({icon:"error",title:"!Error",text:"No se pudo actualizar la imagen"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}}))})}),$(document).on("click",".borrar_registro",function(e){e.preventDefault();var t=$(this).attr("data-id"),a=$(this).attr("data-tipo"),i=($(this).attr("data-user"),$(this).attr("data-image")),r=$(this).attr("data-tkn"),o=$("#tBody");Swal.fire({title:"¿Estas Seguro que deseas ELIMINAR la imagen?",text:"Una imagen eliminada no se puede recuperar!",icon:"warning",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"Si, ELIMINAR!",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&$.ajax({type:"post",data:{nameImg:i,id:t,csrf:r},url:"https://genteayuda.site/pagemanagephatuser/"+a+"/delete",success:function(e){e=JSON.parse(e);e.result?(jQuery('[data-id="'+e.user+'"]').parents("tr").remove(),jQuery('[data-image="'+e.image+'"]').parent().remove(),Swal.fire("Eliminado!","La imagen ha sido eliminada","success"),0==o.children().length&&""==e.image&&window.location.reload()):Swal.fire({icon:"error",title:"Error",text:"No se pudo eliminar la imagen, intente nuevamente o contacte al administrador"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})})});
+</script>
+
+</script>
+
+<?php
+
+$lightbox = "<script src='" . SERVERURL . "build/js/lightbox.min.js'></script>";
+
+
+include_once __DIR__ . '/../templates/footer.php'; ?>

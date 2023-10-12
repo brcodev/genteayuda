@@ -1,0 +1,120 @@
+<?php
+
+use Classes\Utils;
+
+include_once __DIR__ . '/../layout/header.php';
+$slider_off;
+
+?>
+
+
+<div class="hero-contacto">
+  <div class="contenido-hero">
+    <h1 class="nombre-evento" data-page="data" catID="<?= $categoria ?>"> Ayuda <?= $categoria ?></h1>
+  </div>
+</div>
+
+<script>
+  var click = 0;
+
+  function rotate(value) {
+    if (click % 2 === 0) {
+      document.getElementById('simbolo').style.webkitTransform = "rotate(" + 0 + "deg)";
+      document.getElementById('simbolo').style.msTransform = "rotate(" + 0 + "deg)";
+      document.getElementById('simbolo').style.transform = "rotate(" + 0 + "deg)";
+      click++;
+    } else {
+      document.getElementById('simbolo').style.webkitTransform = "rotate(" + -90 + "deg)";
+      document.getElementById('simbolo').style.msTransform = "rotate(" + -90 + "deg)";
+      document.getElementById('simbolo').style.transform = "rotate(" + -90 + "deg)";
+      click++;
+    }
+  }
+</script>
+<div class="zona-movil">
+  <h2 id="top">ZONAS <img src="<?= SERVERURL; ?>build/img/flecha.jpg" alt="" class="simbolo" id="simbolo" onclick="rotate(-90)"></h2>
+</div>
+<div class="zonas contenedor-evento">
+  <div class="zona" id="Norte" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Norte</h3>
+  </div>
+  <div class="zona" id="Centro" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Centro</h3>
+  </div>
+  <div class="zona" id="Sur" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Sur</h3>
+  </div>
+  <div class="zona" id="todo" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Todo</h3>
+  </div>
+
+</div>
+
+<?php if(!empty($org)): ?>
+<div class="region">
+  <form>
+    <input class="chosen-value" type="text" value="" placeholder="Buscar Región">
+    <ul class="value-list">
+      <?php
+    
+        foreach ($regiones as $region) : ?>
+          <a href="<?= SERVERURL ?>ayuda/<?= $org[0]->cat_ayuda ?>/<?= $region->id ?>">
+            <li><?= $region->region ?></li>
+          </a>
+        <?php endforeach; ?>
+    </ul>
+  </form>
+</div>
+<?php endif; ?>
+
+<?php if(empty($org)):
+  if($categoria == "Vestuario"){
+    $categoria = "en vestuario";
+  } ?>
+    
+    <h1 class="region-h1" style="text-align: center; margin-bottom: 5rem" > No se encontraron Organizaciones que entreguen ayuda <?= $categoria ?> </h1>
+
+  <?php endif; ?>
+
+
+
+<div class="contenedor-evento tres-columnas post-list" id="postList">
+
+  <?php
+
+
+  foreach ($org as $key => $organizacion) {
+    $postID = $organizacion->id;
+    $name = $organizacion->nombre_organizacion;
+    $name_replaced = URLify::filter($name); ?>
+
+    <article class="entrada-blog">
+      <h2><?= $organizacion->nombre_organizacion ?></h2>
+      <img src="<?= SERVERURL . $organizacion->folder_path . $organizacion->url_imagen; ?>" alt="Imagen Organizacion">
+      <p><i class="<?= $organizacion->icono ?>"></i>Ayuda entregada: <?= $organizacion->cat_ayuda ?> </p>
+      <p><i class="fas fa-lg fa-building"></i> Dirección: <?= $organizacion->direccion_org; ?></p>
+      <p><i class="fas fa-lg fa-phone"></i> teléfono: <?= $organizacion->telefono_org; ?></p>
+      <p><i class="fas fa-at"></i> <?= $organizacion->correo_org; ?></p>
+      <a href="<?= SERVERURL; ?>organizacion/<?= $name_replaced ?>?e=<?= $organizacion->id ?>">Ver Organización</a>
+    </article>
+
+  <?php } ?>
+
+  <div class="load-more" lastID="<?= $postID; ?>" data-csrf="<?= $_SESSION['token'] ?>" style="display: none;">
+    <img src="<?= SERVERURL; ?>build/images/loading.gif" />
+  </div>
+
+  <script>
+    window.onload = function() {
+      var node = document.createElement('style');
+      node.innerHTML = "html {scroll-behavior: smooth;}";
+      document.body.appendChild(node);
+    };
+  </script>
+</div>
+
+<script type="text/javascript">
+ var clickZona=!1;$(window).scroll(function(o){o.preventDefault();var e=$(".nombre-evento").attr("catID"),a=$(".load-more").attr("lastID"),t=$(".load-more").attr("lasteventID"),r=$(".load-more").attr("zonaID"),n=$(".nombre-evento").attr("data-page"),o=$(".load-more").data("csrf");$(window).scrollTop()==$(document).height()-$(window).height()&&!1===clickZona&&0!=t&&0!=a&&$.ajax({type:"POST",url:server+n,data:{zona:r,id:a,eventoid:t,cat:e,csrf:o},beforeSend:function(o){$(".load-more").show()},success:function(o){$(".load-more").remove(),$("#postList").append(o)}})});
+</script>
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>

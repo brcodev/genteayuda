@@ -1,0 +1,64 @@
+<?php include_once __DIR__ . '/../layout/header.php'; ?>
+
+<?php foreach ($fetch as $key => $evento) { ?>
+
+    <div class="hero-contacto">
+        <div class="contenido-hero">
+            <h1><?= $evento->nombre_evento; ?></h1>
+        </div>
+    </div>
+
+    <div class="imgevent">
+
+
+        <div class="evento-img">
+
+            <img src="<?php echo SERVERURL . $evento->folder_path . $evento->url_img_evento ?>" alt="Imagen Evento">
+
+        </div>
+        <div class="desc-eve">
+	    <h3 style="color: #3e3b3b;">Fecha: <?= date("d-m-Y", strtotime($evento->fecha_evento)) ?> a las <?= date("H:i", strtotime($evento->hora_evento)); ?> Hrs.</h3>
+            <h3>Detalles del evento</h3>
+            <p><?= $evento->descripcion_evento; ?></p>
+            <?php
+            $link = URLify::filter( $evento->nombre_organizacion); ?>
+
+            <h3>Organizador:</h3>
+            <h2><a href="<?= SERVERURL ?>organizacion/<?= $link ?>?e=<?= $evento->id_org ?>" class="org-link">  <?= $evento->nombre_organizacion ?></a></h2>
+            <h3>Contacto</h3>
+            <div class="contact-eve">
+                <?php if(!empty($evento->telefono_org)): ?>
+                <p><i class="fas fa-phone"></i> : <?= $evento->telefono_org; ?> </p>
+                <?php endif; ?>
+                <p><i class="fas fa-envelope"></i> : <?= $evento->correo_org; ?></p>
+                <p><i class="fas fa-map-marked-alt"></i> : <?= $evento->direccion_evento; ?> </p>
+            </div>
+
+            <?php if (!empty($evento->in_link) || !empty($evento->fb_link) || !empty($evento->tw_link)) : ?>
+                <h3>Redes Sociales</h3>
+            <?php endif; ?>
+            <?php if (!empty($evento->in_link) && !empty($evento->fb_link) && !empty($evento->tw_link)) {
+                $all = true;
+                $addAll = "-all";
+            } ?>
+
+            <div class="contacto-org-social<?= $addAll ?>">
+
+                <?php if (!empty($evento->in_link)) : ?>
+                    <a href="<?= $evento->in_link ?>"><i class="fa-brands fa-instagram social"></i></a>
+                <?php endif; ?>
+                <?php if (!empty($evento->fb_link)) : ?>
+                    <a href="<?= $evento->fb_link ?>"><i class="fa-brands fa-facebook social""></i></a>
+                <?php endif; ?>  
+                <?php if (!empty($evento->tw_link)) : ?>
+                    <a href=" <?= $evento->tw_link ?>"><i class="fa-brands fa-twitter social""></i></a>
+                <?php endif; ?> 
+      </div> 
+
+
+        </div>
+    </div>
+
+<?php } ?>
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>

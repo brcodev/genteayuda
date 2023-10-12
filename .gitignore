@@ -1,0 +1,16 @@
+appayudawk.code-workspace
+/nbproject
+.env
+appayudawk.code-workspace
+node_modules/
+vendor/
+package-lock.json
+package.json
+postcss.config.js
+SQL.sql
+public_html/build/cscript.txt
+helpers/
+public_html/build/img/event/
+public_html/build/img/org/
+controllers/AdminController.php
+controllers/LoginController.php

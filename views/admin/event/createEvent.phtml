@@ -1,0 +1,165 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Publicar Evento Social</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Publica un nuevo Evento Social, los campos con * son obligatorios.</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="card-header">
+                    <h3 class="card-title">Rellena el formulario para crear un nuevo evento social</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" name="save-eve-file" id="save-eve-file" method="post" action="<?= SERVERURL ?>pagemanagephatuser/create-event" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="titulo">Titulo Evento*</label>
+                            <input type="text" class="form-control" id="titulo_evento" name="nombre" pattern="[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+(\s[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+)*"  placeholder="Titulo del evento" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Evento*</label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="date" class="form-control datetimepicker-input" data-target="#reservationdate" id="datepicker" name="fecha" required />
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Categoría Ayuda*</label>
+                            <select class="form-control select2" style="width: 100%;" name="ayuda" id="cat_ayuda" required>
+                                <option value="" selected="selected">- Seleccione -</option>
+                                <?php
+                               
+                                foreach ($cat_ayuda as $ayuda) : ?>
+                                    <option value="<?= $ayuda->id ?>">
+                                        <?= $ayuda->cat_ayuda; ?>
+
+                                    </option>
+
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="Hora">Hora Evento*</label>
+                            <input type="time" class="form-control" id="hora_evento" name="hora" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Organización*</label>
+                            <select class="form-control select2" style="width: 100%;" name="org" id="id_org" required>
+                                <option value="" selected="selected">- Seleccione -</option>
+                                <?php
+                               
+
+                                foreach ($org as $organizacion) : ?>
+                                    <option value="<?= $organizacion->id ?>">
+                                        <?= $organizacion->nombre_organizacion ?>
+
+                                    </option>
+
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="direccion">Dirección del evento*</label>
+                            <input type="text" class="form-control" id="direccion" name="address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zona">Zona Correspondiente*</label>
+                            <select class="form-control select2" style="width: 100%;" name="zona" id="eve_zone" required>
+                                <option value="" selected="selected">- Seleccione -</option>
+                                <?php
+
+                                foreach ($zone as $zona) : ?>
+                                    <option value="<?= $zona->id ?>">
+                                        <?= $zona->zona; ?>
+
+                                    </option>
+
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                        <label for="descripcion">Descripcion Evento social*</label>
+                        <textarea id="summernote" name="descripcion"></textarea>
+
+                        <div class="form-group">
+                            <label for="imagen_invitado">Selecciona una imagen*</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" name="file" accept="image/*" required>
+                                    <label class="custom-file-label" for="FileInput">Selecciona una imagen</label>
+
+                                </div>
+
+                            </div>
+                            <img id="imgPreview">
+                        </div>
+                        <span id="result_image" class="help-block" style="display:block!important;"></span>
+                        <!-- /.card-body -->
+
+                        <div class="">
+                            <hr>
+                            <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                            <button type="submit" class="btn btn-primary" id="crear_registro">Crear Evento</button>
+                        </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<script type="text/javascript">
+
+  function showError(e){alert(e)}function imageTrue(){if(""==$("#file").val())return!1;var e=$("#file").val().split(".").pop();return!!["png","jpg","jpeg"].includes(e)&&!(4<$("#file")[0].files[0].size/1024/1024)}function filePreview(e){var i;e.files&&e.files[0]&&((i=new FileReader).onload=function(e){$("#imgPreview + img").remove(),$("#con-imagen").remove(),$("#ai").remove(),$("#imgPreview").after('<img class="chose" src="'+e.target.result+'" style="margin-top : 10px;" />')},i.readAsDataURL(e.files[0]))}$(document).ready(function(){$("#crear_registro").attr("disabled",!0),$("#eve_edit").attr("disabled",!0),$("#file").on("change",function(){$("#file").removeClass("is-valid is-invalid"),$("#result_image").text(""),$("#result_image").removeClass("valid-feedback invalid-feedback");let e=!1;if(""==$("#file").val())return showError("Debes selecionar una imagen");var i=$("#file").val().split(".").pop();["png","jpg","jpeg"].includes(i)?4<$("#file")[0].files[0].size/1024/1024?(showError("La imagen solo debe pesar un máximo de 4 MB"),$("#result_image").text("Solo se permiten imágenes con un peso máximo de 4MB."),$("#file").addClass("is-invalid"),$("#result_image").addClass("invalid-feedback")):e=!0:(showError("solo formato png, jpg, jpeg están permitidos"),setTimeout(()=>{window.location.reload()},100)),e&&($("#result_image").text(""),$("#result_image").removeClass("invalid-feedback"),$("#file").removeClass("is-invalid"),$("#file").addClass("is-valid"))}),$("#cat_ayuda, #id_org, #eve_zone, #datepicker, #hora_evento, #summernote, #file, #con-imagen, input[type=text]").on("change keyup summernote.keyup",function(){var e=$("#titulo_evento").val(),i=$("#cat_ayuda").val(),a=$("#direccion").val(),t=$("#id_org").val(),o=$("#eve_zone").val(),r=$("#datepicker").val(),s=$("#hora_evento").val();let l=$("#file").val();var n=imageTrue();l=null!=$("#con-imagen").attr("src")?"yes":"",noDesc=!!$("#summernote").summernote("isEmpty"),""!=e&&""!=a&&""!=r&&""!=s&&!noDesc&&0<i&&0<o&&0<t&&n?($("#crear_registro").attr("disabled",!1),$("#eve_edit").attr("disabled",!1)):""!=e&&""!=a&&""!=r&&""!=s&&!noDesc&&0<i&&0<o&&0<t&&"yes"==l?$("#eve_edit").attr("disabled",!1):($("#crear_registro").attr("disabled",!0),$("#eve_edit").attr("disabled",!0))}),$("#file").change(function(){filePreview(this)}),$("#save-eve-file").on("submit",function(e){e.preventDefault();e=$("#file").val();let i=!1;if(null==$("#con-imagen").attr("src"))if(""==e)showError("Debes seleccionar una imagen");else{var a=$("#file").val().split(".").pop();if(console.log(a),["png","jpg","jpeg"].includes(a)){if(4<$("#file")[0].files[0].size/1024/1024)return showError("La imagen solo debe pesar un máximo de 4 MB");i=!0}else showError("solo formato png, jpg, jpeg están permitidos"),setTimeout(()=>{window.location.reload()},100)}else i=!0;1==i&&(a=new FormData(this),$.ajax({type:$(this).attr("method"),data:a,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){console.log(e),("exito"==e.respuesta||"update"==e.result||e.result?Swal.fire({icon:"success",title:"Registro guardado",text:"Los datos se han guardado"}):"completar"==e.respuesta?Swal.fire({icon:"error",title:"Complete los datos",text:"Todos los campos son obligatorios, exceptuando la imagen"}):Swal.fire({icon:"error",title:"Ocurrió un error ",text:"Recargue la pagina y reinténtelo, o de aviso al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}}))})});
+
+    
+</script>
+
+<?php
+
+include_once __DIR__ . '/../templates/footer.php';
+
+?>

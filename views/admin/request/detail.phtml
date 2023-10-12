@@ -1,0 +1,55 @@
+<?php
+
+use Classes\Utils;
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+
+<div class="content-wrapper">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-text-width"></i>
+                  Detalles formulario N° <?= $detail->id ?>
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <dl class="row">
+                  <dt class="col-sm-4">ID de formulario</dt>
+                  <dd class="col-sm-8"><?= $detail->id ?></dd>
+                  <dt class="col-sm-4">Zona del país</dt>
+                  <dd class="col-sm-8"><?= Utils::zona($detail->form_zona) ?></dd>
+                  <dt class="col-sm-4">Región</dt>
+                  <dd class="col-sm-8"><?= Utils::regiones($detail->id_region) ?></dd>
+                  <dt class="col-sm-4">Ayuda(s) Solicitadas</dt>
+                  <dd class="col-sm-8">
+                    <?php foreach($req as $type){
+                        $stringId = Utils::typeToString($type->ayuda_id);
+                        echo "[$stringId]"." ";
+                    } ?>
+                  </dd>
+                  <dt class="col-sm-4">Fecha y hora de ingreso formulario</dt>
+                  <dd class="col-sm-8"><?= date("d-m-Y H:i:s", strtotime($detail->fecha_formulario)) ?></dd>
+                  <dt class="col-sm-4">Mensaje dejado en el formulario</dt>
+                  <dd class="col-sm-8">
+                     <?php
+                     if(!empty($detail->descripcion_visita)){
+                        echo $detail->descripcion_visita;
+                     }else{
+                        echo "No se dejo mensaje en el formulario.";
+                     }
+                    ?>
+                  </dd>
+                </dl>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+<?php  include_once __DIR__ . '/../templates/footer.php'; ?>

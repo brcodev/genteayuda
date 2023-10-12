@@ -1,0 +1,95 @@
+<?php include_once __DIR__ . '/../layout/header.php'; ?>
+
+
+<div class="hero-contacto">
+  <div class="contenido-hero">
+    <h1 class="nombre-evento" data-page="dataevent">Eventos Sociales</h1>
+    <h2>Eventos - Reuniones - Comedores - Colectas.</h2>
+  </div>
+</div>
+
+<script>
+  var click = 0;
+
+  function rotate(value) {
+    if (click % 2 === 0) {
+      document.getElementById('simbolo').style.webkitTransform = "rotate(" + 0 + "deg)";
+      document.getElementById('simbolo').style.msTransform = "rotate(" + 0 + "deg)";
+      document.getElementById('simbolo').style.transform = "rotate(" + 0 + "deg)";
+      click++;
+    } else {
+      document.getElementById('simbolo').style.webkitTransform = "rotate(" + -90 + "deg)";
+      document.getElementById('simbolo').style.msTransform = "rotate(" + -90 + "deg)";
+      document.getElementById('simbolo').style.transform = "rotate(" + -90 + "deg)";
+      click++;
+    }
+  }
+</script>
+
+<div class="zona-movil">
+  <h2>ZONAS <img src="<?= SERVERURL; ?>build/img/flecha.jpg" alt="" class="simbolo" id="simbolo" onclick="rotate(-90)"></h2>
+</div>
+<div class="zonas contenedor-evento">
+  <div class="zona" id="Norte" data-event="true" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Norte</h3>
+  </div>
+  <div class="zona" id="Centro" data-event="true" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Centro</h3>
+  </div>
+  <div class="zona" id="Sur" data-event="true" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Sur</h3>
+  </div>
+  <div class="zona" id="todo" data-event="true" data-csrf="<?= $_SESSION['token'] ?>">
+    <h3>Todo</h3>
+  </div>
+</div>
+
+<?php if(empty($fetch)): ?>
+    
+    <h1 class="region-h1" style="text-align: center; margin-bottom: 5rem" > No se encontraron eventos </h1>
+
+  <?php endif; ?>
+
+<div class="contenedor-evento tres-columnas post-list" id="postList">
+
+  </section>
+
+  <?php
+
+  foreach ($fetch as $key => $evento) {
+    $id_evento = $evento->id;
+    $name = $evento->nombre_evento;
+    $name_evento = URLify::filter($name);  ?>
+
+    <article class="entrada-blog">
+      <h2><?= $evento->nombre_evento; ?></h2>
+      <img src="<?php echo SERVERURL . $evento->folder_path . $evento->url_img_evento ?>" alt="Imagen evento">
+      <p><i class="<?= $evento->icono; ?>"></i> Ayuda entregada: <?= $evento->cat_ayuda; ?> </p>
+      <p><i class="fas fa-lg fa-building"></i> Dirección: <?= $evento->direccion_evento; ?></p>
+      <p><i class="fa-solid fa-calendar"></i> Fecha: <?= date("d-m-Y", strtotime($evento->fecha_evento)) ?></p>
+      <p><i class="fa-solid fa-clock"></i> Hora: <?= date("H:i", strtotime($evento->hora_evento)); ?> Hrs.</p>
+      <a href="<?= SERVERURL ?>evento/<?= $name_evento ?>?e=<?= $evento->id ?>">Ver Evento</a>
+    </article>
+
+
+  <?php } ?>
+
+  <div class="load-more" lasteventID="<?= $id_evento; ?>" data-csrf="<?= $_SESSION['token'] ?>" style="display: none;">
+    
+  </div>
+
+  <script>
+    window.onload = function() {
+      var node = document.createElement('style');
+      node.innerHTML = "html {scroll-behavior: smooth;}";
+      document.body.appendChild(node);
+    };
+  </script>
+
+</div>
+
+<script type="text/javascript">
+ var clickZona=!1;$(window).scroll(function(o){o.preventDefault();var e=$(".nombre-evento").attr("catID"),a=$(".load-more").attr("lastID"),t=$(".load-more").attr("lasteventID"),r=$(".load-more").attr("zonaID"),n=$(".nombre-evento").attr("data-page"),o=$(".load-more").data("csrf");$(window).scrollTop()==$(document).height()-$(window).height()&&!1===clickZona&&0!=t&&0!=a&&$.ajax({type:"POST",url:server+n,data:{zona:r,id:a,eventoid:t,cat:e,csrf:o},beforeSend:function(o){$(".load-more").show()},success:function(o){$(".load-more").remove(),$("#postList").append(o)}})});
+</script>
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>

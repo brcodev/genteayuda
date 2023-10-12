@@ -1,0 +1,137 @@
+<?php
+
+use Classes\Utils;
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+
+?>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+   <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Organizaciones inscritas</h1>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Organizaciones inscritas (status 4 - Solicitud aprobada, org inscrita)</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="registros" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Región</th>
+                    <th>Nombre Org</th>
+                    <th>Teléfono</th>
+                    <th>Mail</th>
+                    <th>Status</th>
+                    <th>Fecha aprobación</th>
+                    <th>Publicada</th>
+                    <th>Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      
+                      foreach($formsTable as $form):
+                
+                            $zona;
+                            switch ($form->form_zona) {
+                                case 1:
+                                    $zona = "Norte";
+                                    break;
+                                case 2:
+                                    $zona = "Centro";
+                                    break;
+                                case 3:
+                                    $zona = "Sur";
+                                    break;
+                            }
+
+                            $form_reg = Utils::regiones($form->region);
+
+                        ?>
+                      
+                        <tr> 
+                          <td><?= $form->id ?></td>
+                          <td> <?= $form->nombres ?> </td> 
+                          <td> <?= $form->apellidos ?> </td>
+                          <td> <?= $form_reg ?> </td>
+                          <td> <?= $form->org_name ?> </td>
+                          <td> <?= $form->phone ?> </td>
+                          <td> <?= $form->mail ?> </td>
+                          <td> <?= $form->status ?> </td>
+                          <td> <?= date("d-m-Y H:i:s", strtotime($form->date_approved)) ?> </td>
+                          <?php if(!empty($form->published) && $form->status == 9){
+                            $published = 'Si';
+                          }else{
+                            $published = 'No';
+                          }  ?>
+                          <td> <?= $published ?> </td>
+                          <td>
+                            <a href="<?=SERVERURL?>pagemanagephatuser/orgrequest/<?= $form->id ?>" class="btn btn-flat margin">
+                              <i class="far fa-edit"></i>
+                            </a>
+                          </td>   
+                        </tr>
+
+                   <?php  endforeach; ?>
+                    
+                    
+                   
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>id</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Región</th>
+                    <th>Nombre Org</th>
+                    <th>Teléfono</th>
+                    <th>Mail</th>
+                    <th>Status</th>
+                    <th>Fecha aprobación</th>
+                    <th>Publicada</th>
+                    <th>Acciones</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <?php  include_once __DIR__ . '/../templates/footer.php'; ?>
+
+ 

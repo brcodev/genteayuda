@@ -1,0 +1,78 @@
+<?php include_once __DIR__ . '/../../layout/header.php'; ?>
+
+<script>
+    let nav = document.querySelector('nav');
+    nav.remove();
+</script>
+    
+
+
+<div class="hero-contacto">
+            <div class="contenido-hero">
+                    <h1 class="name"></h1>
+            </div>
+    </div>
+
+<div class="imgorg">
+
+<div class="fullscreen-container hidden">
+        <div class='fullscreen-div'>
+            <img class="remove-fullscreen" src="<?php echo SERVERURL;?>build/icons/remove_icon.webp" width="60" />
+        </div>
+    </div>
+
+    <div id="gallery">
+
+        <div id="slide">
+            <!--<div class="counter"></div>-->
+            <a class="prev">❮</a>
+            <a class="nexti">❯</a>
+            <img class="toggleDiapo" src="<?php echo SERVERURL;?>build/icons/pause_diapo.png" width="40" />
+            <img class="fullscreen" src="<?php echo SERVERURL;?>build/icons/fullscreen.png" width="30" />
+            <img id='preview' />
+        </div>
+
+
+        <div id="thumbnails">
+            <div class="wrapper">
+
+            <img src="" class="base thumbnail" alt="jQueryScript">
+            <img src="" class="base2 thumbnail" alt="jQueryScript">
+            <img src="" class="base3 thumbnail" alt="jQueryScript">
+            <img src="" class="base4 thumbnail" alt="jQueryScript">
+               
+            </div>
+        </div>
+</div>
+    <div class="descripcion">
+        <h3>Descripción</h3>
+        <p class="desc"></p>
+        
+        <h3>Contacto</h3>
+        <div class="contacto-org">
+        <p class="phone"><i class="fas fa-phone c-icon"></i></p>
+        <p class="mail"><i class="fas fa-envelope c-icon"></i></p>
+        <p class="map" ><i class="fas fa-map-marked-alt c-icon"></i></p>
+        </div>
+        
+        <h3>Redes Sociales</h3>
+
+
+        <div class="contacto-org-social-all">
+
+        
+        <a href=""><i class="fa-brands fa-instagram social"></i></a>
+       
+        <a href=""><i class="fa-brands fa-facebook social""></i></a>
+        
+        <a href=""><i class="fa-brands fa-twitter social""></i></a>
+        
+        </div> 
+
+
+    </div>
+</div>
+
+<?php include_once __DIR__ . '/../../layout/footer.php'; ?>
+
+

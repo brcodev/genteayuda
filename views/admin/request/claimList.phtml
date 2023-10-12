@@ -1,0 +1,95 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Reclamos ingresados</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Revisa los reclamos realizados por usuarios</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="registros" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Nombre</th>
+                                        <th>email</th>
+                                        <th>Fecha ingreso reclamo</th>
+                                        <th>Status</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    foreach ($list as $form) :
+
+                                    ?>
+
+                                        <tr> 
+                                            <td><?= $form->id ?></td>
+                                            <td> <?= $form->nombre." ".$form->apellido ?> </td> 
+                                            <td> <?= $form->mail ?> </td>
+                                            <td><?= date("d-m-Y H:i:s", strtotime($form->create_date)) ?></td>
+                                            <td> <?= $options[$form->status]; ?></td>
+                                            <td>
+                                                <a href="<?= SERVERURL ?>pagemanagephatuser/claim/<?= $form->id ?>" class="btn btn-flat margin">
+                                                  <i class="far fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    <?php endforeach; ?>
+
+
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Nombre</th>
+                                        <th>email</th>
+                                        <th>Fecha formulario</th>
+                                        <th>Status</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+</div>
+<!-- /.content-wrapper -->
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

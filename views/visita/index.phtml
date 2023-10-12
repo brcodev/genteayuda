@@ -1,0 +1,64 @@
+<?php include_once __DIR__ . '/../layout/header.php'; ?>   
+
+<div class="hero hero-main parallax">
+        <div class="contenido-hero-main">
+            <h1 class="nombre-sitio">GenteAyuda</h1>
+            <h2>Información de contacto de ayudas y organizaciones sociales.</h2>
+            <a class="boton" href="<?=SERVERURL?>categorias">Información de ayudas</a>
+        </div>
+</div>
+ 
+<div class="hero-help">
+        <main class="servicios">
+            <h2>Información de contacto de ayudas:</h2>
+            <div class="servicios-contenedor">
+                <div class="servicio">
+                    <a href="<?= SERVERURL ?>ayuda/Alimentaria" >
+                        <div class="scaler">
+                            <h3>Alimentarias</h3>
+                            <div class="iconos">
+                                <i class="fas fa-heartbeat"></i>
+                         </div>
+                    </a>
+                    </div>
+                    
+                    <p>Busca organizaciones sociales, iniciativas, ayudas comunitarias en la cual ofrecen ayuda de tipo alimentaria</p>
+               
+                </div>
+                <div class="servicio">
+                    <a href="<?= SERVERURL ?>ayuda/Psicológica" >
+                        <div class="scaler">
+                            <h3>Psicológicas</h3>
+                            <div class="iconos">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                        </div>
+                    </a>        
+                    
+                    <p>Busca iniciativas, organizaciones, grupos en donde puedes encontrar un apoyo psicológico, no estas solo</p>
+                </div>
+                <div class="servicio">
+                    <a href="<?= SERVERURL ?>ayuda/Vestuario" >
+                        <div class="scaler">
+                            <h3>Vestuario</h3>
+                            <div class="iconos">
+                                <i class="fas fa-shirt"></i>
+                            </div>
+                        </div>
+                    </a>    
+                    
+                    <p>Consulta información de organizaciones o centros en donde puedas retirar prendas de vestir de forma gratuita.</p>
+                </div>
+            </div> 
+        </main>
+    </div>
+    <div class="hero hero-form parallax">
+
+        <?php include_once __DIR__ . '/form.php'; ?>
+        
+      
+    </div>
+   
+
+    <?php include_once __DIR__ . '/../layout/footer.php'; ?>   
+        

@@ -1,0 +1,126 @@
+<?php
+
+use Classes\Utils;
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+$byname = [];
+foreach ($user as $by) {
+  array_push($byname, $by->nombre);
+  array_push($byname, $by->apellido);
+}
+
+$obs = $detail->admin_observation;
+if (empty($obs) || $obs == " ") {
+  $obs = "Sin observaciones.";
+}
+
+?>
+
+<div class="content-wrapper">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fa fa-address-card"></i>
+        Detalles solicitud N° <?= $detail->id ?>
+      </h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-4">ID de solicitud:</dt>
+        <dd class="col-sm-8"><?= $detail->id ?></dd>
+        <dt class="col-sm-4">Nombre de quien inscribe la org:</dt>
+        <dd class="col-sm-8"><?= $detail->nombres . " " . $detail->apellidos  ?></dd>
+        <dt class="col-sm-4">Nombre de la organización:</dt>
+        <dd class="col-sm-8"><?= $detail->org_name ?></dd>
+        <dt class="col-sm-4">Mensaje de descripción org:</dt>
+        <dd class="col-sm-8"><?= $detail->description ?></dd>
+        <dt class="col-sm-4">Zona del país:</dt>
+        <dd class="col-sm-8"><?= Utils::zona($detail->zona_form) ?></dd>
+        <dt class="col-sm-4">Región:</dt>
+        <dd class="col-sm-8"><?= Utils::regiones($detail->region) ?></dd>
+        <dt class="col-sm-4">Ayuda otorgada:</dt>
+        <dd class="col-sm-8"><?= Utils::typeToString($detail->help) ?></dd>
+        <dt class="col-sm-4">Correo electrónico:</dt>
+        <dd class="col-sm-8"><?= $detail->mail ?></dd>
+        <dt class="col-sm-4">Teléfono:</dt>
+        <dd class="col-sm-8"><?= $detail->phone ?></dd>
+        <dt class="col-sm-4">Fecha y hora de ingreso solicitud:</dt>
+        <dd class="col-sm-8"><?= date("d-m-Y H:i:s", strtotime($detail->date_creation)) ?></dd>
+        <dt class="col-sm-4">status de la solicitud:</dt>
+        <dd class="col-sm-8"><strong> <?= Utils::statusOrg($detail->status) ?> </strong></dd>
+        <?php if (!empty($detail->date_approved)) : ?>
+          <dt class="col-sm-4">Fecha aprobación de solicitud:</dt>
+          <dd class="col-sm-8"><?= date("d-m-Y H:i:s", strtotime($detail->date_approved)) ?></dd>
+        <?php endif; ?>
+        <dt class="col-sm-4">Ultimo status actualizado por admin:</dt>
+        <dd class="col-sm-8"><?php if (!empty($byname)) {
+                                echo $byname[0] . " " . $byname[1] . ".";
+                              } else {
+                                echo "Sistema.";
+                              } ?></dd>
+        <?php if (!empty($detail->date_approved)) : ?>
+          <dt class="col-sm-4">Fecha de publicación:</dt>
+          <dd class="col-sm-8"><?= date("d-m-Y H:i:s", strtotime($detail->published)) ?></dd>
+        <?php endif; ?>
+        <dt class="col-sm-4">Observaciones admin:</dt>
+        <dd class="col-sm-8"><?= $obs ?></dd>
+      </dl>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+  <div class="form-group col-6">
+    <form role="form" name="save_reg" id="save_reg" method="POST" action="<?= SERVERURL ?>pagemanagephatuser/orgrequest/stupdate">
+      <label for="exampleSelectRounded0"> <code>Actualizar status de la solicitud:</code> </label>
+      <select class="custom-select rounded-0" id="exampleSelectRounded0" name="stat" required>
+        <option value="" selected="selected">- Seleccione -</option>
+        <?php
+
+        foreach ($options as $stat) :
+          if ($stat->id == $detail->status) : ?>
+
+            <option value="<?= $stat->id ?>" selected>
+              <?= $stat->id . ") " . $stat->status;; ?>
+            </option>
+
+          <?php else : ?>
+            <option value="<?= $stat->id ?>">
+              <?= $stat->id . ") " . $stat->status; ?>
+
+            </option>
+
+        <?php endif;
+        endforeach; ?>
+
+      </select>
+      <input type="hidden" name="cod" value="<?= $cod ?>">
+      <input type="hidden" name="csrf" value="<?= $csrf ?>">
+      <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Actualizar status</button>
+    </form>
+  </div>
+
+
+  <div class="col-sm-6">
+    <form role="form" name="save_reg_obs" id="save_reg_obs" method="POST" action="<?= SERVERURL ?>pagemanagephatuser/orgrequest/noteupdate">
+      <div class="form-group">
+        <label><code>Agregar observaciones:</code></label>
+        <textarea class="form-control" minlength="2" name="obs" rows="3" maxlength="5000" style="margin-bottom: 10px;" required></textarea>
+      </div>
+      <input type="hidden" name="csrf" value="<?= $csrf ?>">
+      <input type="hidden" name="cod" value="<?= $cod ?>">
+      <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Agregar Observación</button>
+    </form>
+  </div>
+
+
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function(){$("#save_reg").on("submit",function(t){t.preventDefault();t=new FormData(this);$.ajax({type:$(this).attr("method"),data:t,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(t){console.log(t),("exito"==t.respuesta||"update"==t.result||t.result?Swal.fire({icon:"success",title:"Status actualizado",text:"El status se ha actualizado correctamente"}):Swal.fire({icon:"error",title:"Ocurrió un error ",text:"Recargue la pagina y reinténtelo, o de aviso al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})}),$("#save_reg_obs").on("submit",function(t){t.preventDefault();t=new FormData(this);$.ajax({type:$(this).attr("method"),data:t,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(t){console.log(t),("exito"==t.respuesta||"update"==t.result||t.result?Swal.fire({icon:"success",title:"Observación añadida",text:"La observación fue añadida exitosamente"}):Swal.fire({icon:"error",title:"Ocurrió un error ",text:"Recargue la pagina y reinténtelo, o de aviso al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})});
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

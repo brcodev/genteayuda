@@ -1,0 +1,249 @@
+<?php
+
+use MiladRahimi\PhpRouter\Url;
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Editar Evento</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Edita un Evento Social, los campos con * son obligatorios.</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="card-header">
+                    <h3 class="card-title">Actualiza evento social en el siguiente formulario</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" name="save-eve-file" id="save-eve-file" method="post" action="<?=SERVERURL?>pagemanagephatuser/event/<?= $user->id ?>/<?= URLify::filter($user->nombre_evento) ?>">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="titulo">Titulo Evento*</label>
+                            <input type="text" class="form-control" id="titulo_evento" name="nombre_evento" pattern="[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+(\s[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+)*" value="<?= $user->nombre_evento ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Evento*</label>
+                            <?php
+                            $fecha = $user->fecha_evento;
+
+                            ?>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="date" class="form-control datetimepicker-input" data-target="#reservationdate" id="datepicker" name="fecha_evento" value="<?= $fecha ?>" required>
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Categoría Ayuda*</label>
+                            <select class="form-control select2" style="width: 100%;" id="cat_ayuda" name="id_cat_ayuda" required>
+                                <option value="" selected="selected">- Seleccione -</option>
+                                <?php
+                                
+                                $categoria_actual = $user->id_cat_ayuda;
+                                foreach ($ayuda as $cat_ayuda) :
+                                    if ($cat_ayuda->id == $categoria_actual) : ?>
+
+
+                                        <option value="<?= $cat_ayuda->id ?>" selected>
+                                            <?= $cat_ayuda->cat_ayuda; ?>
+
+                                        </option>
+
+                                    <?php else :  ?>
+
+                                        <option value="<?= $cat_ayuda->id ?>">
+                                            <?= $cat_ayuda->cat_ayuda; ?>
+
+                                        </option>
+
+
+                                <?php endif;
+
+                                endforeach;
+
+                                ?>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="Hora">Hora Evento*</label>
+                            <?php
+                            $hora = $user->hora_evento;
+                            $hora_formato = date('H:i', strtotime($hora));
+
+                            ?>
+                            <input type="time" class="form-control" id="hora_evento" name="hora_evento" value="<?= $hora_formato ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Organización*</label>
+                            <select class="form-control select2" style="width: 100%;" id="id_org" name="id_org" required>
+                                <option value="" selected="selected">- Seleccione -</option>
+                                <?php
+                               
+                                    $org_actual = $user->id_org;
+                                    foreach ($org as $organizacion) :
+                                        if ($organizacion->id == $org_actual) : ?>
+
+
+                                            <option value="<?= $organizacion->id ?>" selected>
+                                                <?= $organizacion->nombre_organizacion; ?>
+
+                                            </option>
+
+                                        <?php  else : ?>
+
+                                            <option value="<?= $organizacion->id ?>">
+                                                <?= $organizacion->nombre_organizacion; ?>
+
+                                            </option>
+
+                                <?php endif;
+                                    endforeach;
+                                
+
+                                ?>
+
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="direccion">Dirección del evento*</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion_evento" value="<?= $user->direccion_evento ?>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eve_zone_id">Zona*</label>
+                            <select class="form-control select2" style="width: 100%;" id="eve_zone" name="eve_zona_id" required>
+                                <option value="" selected="selected">- Seleccione -</option>
+                                <?php
+                               
+                                    $zona_actual = $user->eve_zona_id;
+                                    foreach ($zone as $zona) :
+                                        if ($zona->id == $zona_actual) : ?>
+
+
+                                            <option value="<?= $zona->id ?>" selected>
+                                                <?= $zona->zona; ?>
+
+                                            </option>
+
+                                        <?php  else : ?>
+
+                                            <option value="<?= $zona->id ?>">
+                                                <?= $zona->zona; ?>
+
+                                            </option>
+
+                                <?php endif;
+                                    endforeach;
+                                
+                                ?>
+
+                            </select>
+                        </div>
+
+
+
+                        <label for="descripcion">Descripción Evento social*</label>
+                        <textarea id="summernote" name="descripcion_evento"><?= $user->descripcion_evento ?></textarea>
+
+                        <div class="form-group">
+                            <label for="imagen_invitado">Imagen*</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" name="file" accept="image/*" >
+                                    <label class="custom-file-label" for="FileInput">Selecciona una imagen</label>
+                                </div>
+                            </div>
+                            <?php 
+                                         $dir_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $user->folder_path;
+                                         $dir_url = SERVERURL . $user->folder_path;
+                                         $urlpath = SERVERURL . "pagemanagephatuser/img/delete";
+                                         $extensions_array = array('jpg', 'png', 'jpeg');
+                           
+                                         if (is_dir($dir_path)) {
+                                           $files = scandir($dir_path);
+                           
+                                           for ($i = 0; $i < count($files); $i++) {
+                                             if ($files[$i] != '.' && $files[$i] != '..') {
+                                             
+                           
+                                               $file = pathinfo($files[$i]);
+                                               $extension = $file['extension'];
+                                               
+                                               if (in_array($extension, $extensions_array)) { ?>
+
+                                                   <h6 id="ai" style="margin-top: 5px;">Imagen actual</h6>
+                                                   <img id="con-imagen" src="<?= $dir_url.$files[$i] ?>" width="350" height="300" style="margin-top : 5px;" alt=""> 
+
+                                                <?php 
+                                                 
+                                               }
+                                             }
+                                           }
+                                         }
+                                    ?>
+                            <div id="imgPreview">
+                            
+                            </div>
+                        </div>
+                        <span id="result_image" class="help-block" style="display:block!important;"></span>
+                        <!-- /.card-body -->
+
+                        <div class="">
+                            <hr>
+                            <input type="hidden" name="csrf" value="<?= $csrf; ?>">
+                            <button type="submit" id="eve_edit" class="btn btn-primary" >Actualizar</button>
+                        </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+
+ function showError(e){alert(e)}function imageTrue(){if(""==$("#file").val())return!1;var e=$("#file").val().split(".").pop();return!!["png","jpg","jpeg"].includes(e)&&!(4<$("#file")[0].files[0].size/1024/1024)}function filePreview(e){var i;e.files&&e.files[0]&&((i=new FileReader).onload=function(e){$("#imgPreview + img").remove(),$("#con-imagen").remove(),$("#ai").remove(),$("#imgPreview").after('<img class="chose" src="'+e.target.result+'" style="margin-top : 10px;" />')},i.readAsDataURL(e.files[0]))}$(document).ready(function(){$("#crear_registro").attr("disabled",!0),$("#eve_edit").attr("disabled",!0),$("#file").on("change",function(){$("#file").removeClass("is-valid is-invalid"),$("#result_image").text(""),$("#result_image").removeClass("valid-feedback invalid-feedback");let e=!1;if(""==$("#file").val())return showError("Debes selecionar una imagen");var i=$("#file").val().split(".").pop();["png","jpg","jpeg"].includes(i)?4<$("#file")[0].files[0].size/1024/1024?(showError("La imagen solo debe pesar un maximo de 4 MB"),$("#result_image").text("Solo se permiten imágenes con un peso máximo de 4MB."),$("#file").addClass("is-invalid"),$("#result_image").addClass("invalid-feedback")):e=!0:(showError("solo formato png, jpg, jpeg están permitidos"),setTimeout(()=>{window.location.reload()},100)),e&&($("#result_image").text(""),$("#result_image").removeClass("invalid-feedback"),$("#file").removeClass("is-invalid"),$("#file").addClass("is-valid"))}),$("#cat_ayuda, #id_org, #eve_zone, #datepicker, #hora_evento, #summernote, #file, #con-imagen, input[type=text]").on("change keyup summernote.keyup",function(){var e=$("#titulo_evento").val(),i=$("#cat_ayuda").val(),a=$("#direccion").val(),t=$("#id_org").val(),o=$("#eve_zone").val(),r=$("#datepicker").val(),s=$("#hora_evento").val();let l=$("#file").val();var n=imageTrue();l=null!=$("#con-imagen").attr("src")?"yes":"",noDesc=!!$("#summernote").summernote("isEmpty"),""!=e&&""!=a&&""!=r&&""!=s&&!noDesc&&0<i&&0<o&&0<t&&n?($("#crear_registro").attr("disabled",!1),$("#eve_edit").attr("disabled",!1)):""!=e&&""!=a&&""!=r&&""!=s&&!noDesc&&0<i&&0<o&&0<t&&"yes"==l?$("#eve_edit").attr("disabled",!1):($("#crear_registro").attr("disabled",!0),$("#eve_edit").attr("disabled",!0))}),$("#file").change(function(){filePreview(this)}),$("#save-eve-file").on("submit",function(e){e.preventDefault();e=$("#file").val();let i=!1;if(null==$("#con-imagen").attr("src"))if(""==e)showError("Debes selecionar una imagen");else{var a=$("#file").val().split(".").pop();if(console.log(a),["png","jpg","jpeg"].includes(a)){if(4<$("#file")[0].files[0].size/1024/1024)return showError("La imagen solo debe pesar un máximo de 4 MB");i=!0}else showError("solo formato png, jpg, jpeg están permitidos"),setTimeout(()=>{window.location.reload()},100)}else i=!0;1==i&&(a=new FormData(this),$.ajax({type:$(this).attr("method"),data:a,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){console.log(e),("exito"==e.respuesta||"update"==e.result||e.result?Swal.fire({icon:"success",title:"Registro guardado",text:"Los datos se han guardado"}):"completar"==e.respuesta?Swal.fire({icon:"error",title:"Complete los datos",text:"Todos los campos son obligatorios, exceptuando la imagen"}):Swal.fire({icon:"error",title:"Ocurrió un error ",text:"Recargue la pagina y reinténtelo, o de aviso al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}}))})});                                        
+   
+</script>
+
+<?php  include_once __DIR__ . '/../templates/footer.php'; ?>

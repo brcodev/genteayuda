@@ -1,0 +1,169 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Publica una Organización</h1>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Publica una nueva Organización Social</h3>
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fas fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="card-header">
+          <h3 class="card-title">Rellena el formulario para crear una nueva Organización, los campos con * son obligatorios.</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" name="save_reg" id="save_reg" method="post" action="<?= SERVERURL ?>pagemanagephatuser/createorg" enctype="multipart/form-data">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="ayuda">Seleccione la organización inscrita que desea publicar*</label>
+              <select class="form-control select2" style="width: 100%;" id="registered" name="registered" required>
+                <option value="" selected="selected">- Seleccione -</option>
+                <?php
+               
+                foreach ($formsTable as $form) : ?>
+                  <option value="<?= $form->id ?>">
+                    <?= $form->org_name . "  (" . $form->nombres . " " . $form->apellidos . ")"  ?>
+
+                  </option>
+
+
+                <?php endforeach; ?>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nombre">Nombre Organización* </label>
+              <input type="text" class="form-control" id="nombre_org" name="nombre" pattern="[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+(\s[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+)*" placeholder="Nombre Organización" required>
+            </div>
+            <div class="form-group">
+              <label>Correo Organización*</label>
+              <input type="email" class="form-control" id="correo_org" name="correo" placeholder="Correo" required>
+            </div>
+            <div class="form-group">
+              <label>Teléfono Organización</label>
+              <input type="text" class="form-control" id="telefono_org" name="telefono" pattern="[0-9]{9}" placeholder="Debe contener 9 dígitos">
+            </div>
+            <div class="form-group">
+              <label for="ayuda">Región*</label>
+              <select class="form-control select2" style="width: 100%;" id="reg_org" name="region" required>
+                <option value="" selected="selected">- Seleccione -</option>
+                <?php
+
+                foreach ($regiones as $region) : ?>
+                  <option value="<?= $region->id ?>">
+                    <?= $region->region; ?>
+
+                  </option>
+
+                <?php endforeach; ?>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Dirección Organización</label>
+              <input type="text" class="form-control" id="direccion_org" name="direccion" maxlength="200" placeholder="Calle numero, comuna.">
+            </div>
+
+            <div class="form-group">
+              <label for="ayuda">Categoría Ayuda*</label>
+              <select class="form-control select2" style="width: 100%;" id="cat_ayuda" name="ayuda" required>
+                <option value="" selected="selected">- Seleccione -</option>
+                <?php
+
+                foreach ($cat_ayuda as $cat) : ?>
+                  <option value="<?= $cat->id ?>">
+                    <?= $cat->cat_ayuda; ?>
+
+                  </option>
+
+                <?php endforeach; ?>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Perfil de Instagram</label>
+              <input type="text" class="form-control" id="in_link" name="in_link" placeholder="Link Instagram">
+            </div>
+            <div class="form-group">
+              <label>Perfil de Facebook</label>
+              <input type="text" class="form-control" id="fb_link" name="fb_link" placeholder="Link Facebook">
+            </div>
+            <div class="form-group">
+              <label>Perfil de Twitter</label>
+              <input type="text" class="form-control" id="tw_link" name="tw_link" placeholder="Link Twitter">
+            </div>
+
+            <label for="descripcion">Descripción Organización*</label>
+            <textarea id="summernote" name="descripcion"></textarea>
+
+            <div class="form-group">
+              <label>Subir Imágenes de la Organización (min 1 - max 4)*</label>
+              <div>
+                <iframe id='myframe' class="frame" src="<?= SERVERURL ?>upload/images" frameborder='0' scrolling='no' style="overflow:auto;" data-chan="prueba"></iframe>
+              </div>
+
+            </div>
+            <!-- /.card-body -->
+
+            <div class="">
+              <hr>
+              <input type="hidden" name="csrf" value="<?= $csrf ?>">
+              <button type="submit" class="btn btn-primary btn-subir" id="crear_registro">Publicar org</button>
+            </div>
+        </form>
+
+        <input type="button" class="btn btn-primary btn-warning" style="margin-top: 1rem;" name="vista" value="Vista previa " onclick="previsualizar()">
+
+      </div>
+      <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+
+function previsualizar(){const e=$("#myframe");var t=e.contents().find(".posts_article").map(function(){return $(this).data("base")}).get(),a=$("#nombre_org").val(),r=" "+$("#correo_org").val(),o=" "+$("#telefono_org").val(),n=" "+$("#direccion_org").val(),i=$("#summernote").val(),s=window.open("org-preview","","width=800,height=800");s.onload=function(){s.jQuery(".name").html(a),s.jQuery(".mail").html(r),s.jQuery(".phone").html(o),s.jQuery(".map").html(n),s.jQuery(".desc").html(i),s.jQuery(".base").attr("src",t[0]),s.jQuery(".base2").attr("src",t[1]),s.jQuery(".base3").attr("src",t[2]),s.jQuery(".base4").attr("src",t[3])}}function isEmail(e){return/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e)}$(document).ready(function(){$("#crear_registro").attr("disabled",!0);$("#reg_org, #cat_ayuda, #summernote, #registered, input[type=text], input[type=email]").on("change keyup summernote.keyup",function(){var e=$("#reg_org").val(),t=$("#cat_ayuda").val(),a=$("#nombre_org").val(),r=$("#correo_org").val(),o=$("#registered").val(),n=isEmail(r);$("#myframe");noDesc=!!$("#summernote").summernote("isEmpty"),""!=a&&0<e&&""!=r&&!noDesc&&n&&0<t&&""!=o?$("#crear_registro").attr("disabled",!1):""!=a&&0<e&&""!=r&&!noDesc&&n&&0<t?$("#org_edit").attr("disabled",!1):($("#crear_registro").attr("disabled",!0),$("#org_edit").attr("disabled",!0))}),$("#save_reg").on("submit",function(e){e.preventDefault();$(this).attr("#fileImg");const t=$("#myframe"),a=t.contents().find(".upload-btn");setTimeout(function(){a.click()},1e3);var r=$(".suggested-posts-article").map(function(){return $(this).data("image")}).get(),e=t.contents().find(".posts_article").map(function(){return $(this).data("base")}).get();4<e.length+r.length?alert("Solo puedes subir 4 imágenes como máximo, debes eliminar "+(e.length+r.length-4)+".").then(()=>{setTimeout(()=>{window.location.reload()},100)}):e.length+r.length<1?Swal.fire({icon:"warning",title:"Debes subir una imagen",text:"Se requiere como mínimo una imagen"}):(r=new FormData(this),$.ajax({type:$(this).attr("method"),data:r,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){console.log(e),("exito"==e.respuesta||"update"==e.result||e.result?Swal.fire({icon:"success",title:"Registro guardado",text:"Los datos se han guardado"}):"completar"==e.respuesta?Swal.fire({icon:"error",title:"Complete los datos",text:"Todos los campos son obligatorios, exceptuando la imagen"}):Swal.fire({icon:"error",title:"Ocurrió un error ",text:"Recargue la pagina y reinténtelo, o de aviso al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}}))})});
+
+</script>
+
+<?php
+
+include_once __DIR__ . '/../templates/footer.php';
+
+?>

@@ -1,0 +1,107 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Cambiar contraseña</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-body">
+                <div class="card-header">
+                    <h3 class="card-title">Ingresa tu nueva contraseña actual para cambiarla por una nueva.</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+
+                <div class="login-box" style="margin: 1rem auto;">
+                    <div class="card card-outline card-primary">
+                        <div class="card-body">
+                            <p class="login-box-msg">Cambia tu contraseña.</p>
+                            <form id="save_reg" action="<?= SERVERURL ?>pagemanagephatuser/change" method="post">
+                                <div class="input-group mb-3">
+                                    <input type="password" class="form-control form-control-one validate" id="password" name="password" placeholder="Ingresa tu contraseña actual">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-lock"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input type="password" class="form-control form-control-one validate" id="new" name="new" placeholder="Ingresa tu nueva contraseña">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-lock"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Confirma tu nueva contraseña">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-lock"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                                        <button type="submit" id="c_passw" class="btn btn-primary btn-block">Cambiar contraseña</button>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.login-card-body -->
+                    </div>
+                    <div class="col-md-14">
+
+                        <div class="centro" role="alert">
+                            <ul>
+                                <li class="requirements leng"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos 6 caracteres.</li>
+                                <li class="requirements big-letter"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos una mayúscula </li>
+                                <li class="requirements num"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un numero</li>
+                                <li class="requirements special-char"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un carácter especial (@, #, !, etc..)</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+    $("#reset_pass").attr("disabled",!0);var leng,bigLetter,num,specialChar,server="https://genteayuda.site/",$pass=$("#new, #confirm"),$passwordAlert=$(".password-alert"),$requirements=$(".requirements"),$leng=$(".leng"),$bigLetter=$(".big-letter"),$num=$(".num"),$specialChar=$(".special-char"),specialChars="!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~",numbers="0123456789";$requirements.addClass("wrong"),$pass.on("focus",function(){$passwordAlert.show()}),$pass.on("input blur",function(s){var e=$(this).val();$passwordAlert.show(),e.length<6?leng=!1:5<e.length&&(leng=!0),bigLetter=e.toLowerCase()!=e,num=!1;for(var a=0;a<e.length;a++)for(var r=0;r<numbers.length;r++)e[a]==numbers[r]&&(num=!0);specialChar=!1;for(a=0;a<e.length;a++)for(r=0;r<specialChars.length;r++)e[a]==specialChars[r]&&(specialChar=!0);console.log(leng,bigLetter,num,specialChar),1==leng&&1==bigLetter&&1==num&&1==specialChar?($(this).addClass("valid").removeClass("invalid"),$requirements.removeClass("wrong").addClass("good"),$passwordAlert.removeClass("alert-warning").addClass("alert-success")):($(this).addClass("invalid").removeClass("valid"),$passwordAlert.removeClass("alert-success"),0==leng?$leng.addClass("wrong").removeClass("good"):$leng.addClass("good").removeClass("wrong"),0==bigLetter?$bigLetter.addClass("wrong").removeClass("good"):$bigLetter.addClass("good").removeClass("wrong"),0==num?$num.addClass("wrong").removeClass("good"):$num.addClass("good").removeClass("wrong"),0==specialChar?$specialChar.addClass("wrong").removeClass("good"):$specialChar.addClass("good").removeClass("wrong")),"blur"==s.type&&$passwordAlert.hide()}),$("#c_passw").attr("disabled",!0),$("#new").prop("disabled",!0),$("#confirm").prop("disabled",!0),$("input[type=text], input[type=password]").on("keyup",function(){var s=$("#password").val(),e=$("#new").val(),a=$("#confirm").val();$("#new").removeClass("is-valid is-invalid"),$("#confirm").removeClass("is-valid is-invalid"),$("#resultado_password").text(""),$("#resultado_password").removeClass("valid-feedback invalid-feedback"),$("#c_passw").attr("disabled",!0),$("#confirm").val()===e&&""!=$("#new").val()&&""!=$("#confirm").val()?($("#resultado_password").text(""),$("#new").addClass("is-valid"),$("#confirm").addClass("is-valid"),$("#resultado_password").addClass("valid-feedback")):a!=e&&($("#resultado_password").text("Las contraseñas no coinciden"),$("#new").addClass("is-invalid"),$("#confirm").addClass("is-invalid"),$("#resultado_password").addClass("invalid-feedback"),$("#c_passw").attr("disabled",!0)),""!=s?($("#new").prop("disabled",!1),$("#confirm").prop("disabled",!1)):($("#new").prop("disabled",!0),$("#confirm").prop("disabled",!0)),""!=e&&""!=a&&a===e&&e===a&&1==leng&&1==bigLetter&&1==num&&1==specialChar?$("#c_passw").attr("disabled",!1):$("#c_passw").attr("disabled",!0)}),$("#save_reg").on("submit",function(s){s.preventDefault();s=new FormData(this);$.ajax({type:$(this).attr("method"),data:s,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(s){s.result?Swal.fire({icon:"success",title:"Correcto",text:"Se guardo correctamente"}).then(()=>{setTimeout(()=>{window.location.reload()},100)}):"update"===s.result?(Swal.fire({icon:"success",title:"Registro actualizado",text:"El registro ha sido actualizado"}),$("input[id=password]").val("")):Swal.fire({icon:"error",title:"Error!",text:"Hubo un error"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})});
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

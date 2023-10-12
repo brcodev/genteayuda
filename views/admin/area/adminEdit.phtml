@@ -1,0 +1,173 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Editar Administrador</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Editar Administrador, los campos con * son obligatorios.</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-header">
+                    <h3 class="card-title">Completa los campos que deseas actualizar</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <div class="sectionc">
+                    <div class="ex-button2">
+                        <input type="text" class="form-control" id="clipt" value="<?= $user->access_token ?>" readonly>
+                    </div>
+                    <div class="ex-button">
+                        <button class="btn btn-block btn-dark btn-sm " id="copy" onclick="copyText()">Copy</button>
+                        <script>
+                            function copyText() {
+
+                                var clipt = document.getElementById('clipt');
+                                var button = document.getElementById('copy')
+
+                                clipt.select();
+                                clipt.setSelectionRange(0, 99999);
+
+                                navigator.clipboard.writeText(clipt.value);
+                                button.textContent('copiado');
+                               
+                            }
+                        </script>
+                    </div>
+                    <div class="ex-button">
+                        <form action="<?= SERVERURL ?>pagemanagephatuser/adminuser/accupdate" id="acc_u" data-user="<?=$user->usuario?>" method="post">
+                            <input type="hidden" name="csrf" value="<?= $_SESSION['token'] ?>">
+                            <input type="hidden" name="acc_cod" value="<?= $user->access_token ?>">
+                            <input class="btn btn-block btn-warning" type="submit" value="Cambiar token">
+                        </form>
+                    </div>
+                    <div class="ex-button">
+                      
+                            <input type="hidden" name="csrf" value="<?= $_SESSION['token'] ?>">
+                            <input type="hidden" name="acc_cod" value="<?= $user->access_token ?>">
+                            <button class="btn btn-block btn-danger" id="acc_d" data-tkn="<?= $_SESSION['token'] ?>" data-user="<?=$user->usuario?>" data-id="<?= $user->access_token ?>" data-type="accadsys/accdel">Borrar token</button>
+                        
+                    </div>
+                </div>
+
+                <form role="form" name="guardar-registro" id="cr-saveuser" method="post" action="<?= SERVERURL ?>pagemanagephatuser/adminuser/<?= $user->usuario ?>">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" value="<?= $user->usuario ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Nombres</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="<?= $user->nombre ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Apellidos</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" value="<?= $user->apellido ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo*</label>
+                            <input type="email" class="form-control" id="correo" name="correo" value="<?= $user->correo_admin ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Repetir correo</label>
+                            <input type="email" class="form-control" id="repetir_correo" name="repetir_correo" value="<?= $user->correo_admin ?>" required>
+                            <span id="resultado_correo" class="help-block"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}" value="<?= $user->tel ?>" required>
+                        </div>
+                        <?php if ($_SESSION['nivel'] == 2) : ?>
+                            <div class="form-group">
+                                <label for="type">¿Conceder privilegios avanzados de administrador?</label>
+                                <div class="form-group">
+                                    <label><input type="checkbox" name="type" id="type" value="priv"> Marcar la casilla para conceder privilegios</label>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control form-control-one validate" id="password" name="password" placeholder="Contraseña">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" id="repetir_password" name="repetir_password" placeholder="Confirmar contraseña">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                            <span id="resultado_password" class="help-block"></span>
+                        </div>
+                        <div class="col-md-14">
+
+                            <div class="centro" role="alert">
+                                <ul>
+                                    <li class="requirements leng"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos 6 caracteres.</li>
+                                    <li class="requirements big-letter"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos una mayúscula </li>
+                                    <li class="requirements num"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un numero</li>
+                                    <li class="requirements special-char"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un carácter especial (@, #, !, etc..)</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="">
+                            <hr>
+                            <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                            <input type="hidden" name="id" value="<?= $user->usuario ?>">
+                            <button type="submit" id="ad_edit" class="btn btn-primary">Editar</button>
+                        </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+
+    let server="https://genteayuda.site/pagemanagephatuser/";var leng,bigLetter,num,specialChar,$pass=$(".form-control-one[type='password']"),$passwordAlert=$(".password-alert"),$requirements=$(".requirements"),$leng=$(".leng"),$bigLetter=$(".big-letter"),$num=$(".num"),$specialChar=$(".special-char"),specialChars="!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~",numbers="0123456789",noPass=!0;$requirements.addClass("wrong"),$pass.on("focus",function(){$passwordAlert.show()}),$pass.on("input blur",function(e){var a=$(this).val();$passwordAlert.show(),a.length<6?leng=!1:5<a.length&&(leng=!0),bigLetter=a.toLowerCase()!=a,num=!1;for(var r=0;r<a.length;r++)for(var s=0;s<numbers.length;s++)a[r]==numbers[s]&&(num=!0);specialChar=!1;for(r=0;r<a.length;r++)for(s=0;s<specialChars.length;s++)a[r]==specialChars[s]&&(specialChar=!0);console.log(leng,bigLetter,num,specialChar),1==leng&&1==bigLetter&&1==num&&1==specialChar?($(this).addClass("valid").removeClass("invalid"),$requirements.removeClass("wrong").addClass("good"),$passwordAlert.removeClass("alert-warning").addClass("alert-success")):($(this).addClass("invalid").removeClass("valid"),$passwordAlert.removeClass("alert-success"),0==leng?$leng.addClass("wrong").removeClass("good"):$leng.addClass("good").removeClass("wrong"),0==bigLetter?$bigLetter.addClass("wrong").removeClass("good"):$bigLetter.addClass("good").removeClass("wrong"),0==num?$num.addClass("wrong").removeClass("good"):$num.addClass("good").removeClass("wrong"),0==specialChar?$specialChar.addClass("wrong").removeClass("good"):$specialChar.addClass("good").removeClass("wrong")),"blur"==e.type&&$passwordAlert.hide()}),$("#crear_registro_admin").attr("disabled",!0),$("input[type=text], input[type=password], input[type=email]").on("keyup",function(){var e=$("#password").val(),a=$("#repetir_password").val(),r=$("#usuario").val(),s=$("#nombre").val(),t=$("#apellido").val();noPass=!(0<e.length||0<a.length)||($("#ad_edit").attr("disabled",!0),!1);var o=$("#correo").val();$("#correo").removeClass("is-valid is-invalid"),$("#repetir_correo").removeClass("is-valid is-invalid"),$("#resultado_correo").text(""),$("#resultado_correo").removeClass("valid-feedback invalid-feedback"),$("#repetir_correo").val()===o&&""!=o?($("#correo").addClass("is-valid"),$("#repetir_correo").addClass("is-valid"),$("#resultado_correo").addClass("valid-feedback")):$("#repetir_correo").val()!=o&&($("#resultado_correo").text("Verifique los correos"),$("#correo").addClass("is-invalid"),$("#repetir_correo").addClass("is-invalid"),$("#resultado_correo").addClass("invalid-feedback"),$("#ad_edit").attr("disabled",!0)),$("#password").removeClass("is-valid is-invalid"),$("#repetir_password").removeClass("is-valid is-invalid"),$("#resultado_password").text(""),$("#resultado_password").removeClass("valid-feedback invalid-feedback"),$("#repetir_password").val()===e&&""!=$("#password").val()&&""!=$("#repetir_password").val()?($("#resultado_password").text("Las contraseñas coinciden"),$("#password").addClass("is-valid"),$("#repetir_password").addClass("is-valid"),$("#resultado_password").addClass("valid-feedback")):a!=e&&($("#resultado_password").text("Las contraseñas NO coinciden"),$("#password").addClass("is-invalid"),$("#repetir_password").addClass("is-invalid"),$("#resultado_password").addClass("invalid-feedback")),""!=e&&""!=a&&a===e&&e===a&&1==leng&&1==bigLetter&&1==num&&1==specialChar&&""!=o&&$("#repetir_correo").val()===o&&""!=r&&""!=s&&""!=t?($("#ad_edit").attr("disabled",!1),$("#crear_registro_admin").attr("disabled",!1)):1==noPass&&""!=o&&$("#repetir_correo").val()===o?$("#ad_edit").attr("disabled",!1):($("#ad_edit").attr("disabled",!0),$("#crear_registro_admin").attr("disabled",!0))}),$(document).on("click","#acc_d",function(e){e.preventDefault();var a=$(this).attr("data-id"),r=$(this).attr("data-type"),s=$(this).attr("data-tkn"),e=$(this).attr("data-user");Swal.fire({title:"¿Seguro desea ELIMINAR el token de acceso del usuario "+e,text:"El usuario perderá todo tipo de acceso a la plataforma el administrador deberá generar un nuevo token de acceso",icon:"warning",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"Si, ELIMINAR!",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&$.ajax({type:"post",data:{id:a,csrf:s},url:server+r,success:function(e){(JSON.parse(e).result?Swal.fire({icon:"success",title:"Token eliminado",text:"Se elimino correctamente"}):Swal.fire({icon:"error",title:"Error",text:"Hubo un error, no se pudo eliminar el token, refresque la pagina e intente nuevamente, de persistir el problema contacte al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})}),$(document).on("submit","#acc_u",function(e){e.preventDefault();e=$(this).attr("data-user");Swal.fire({title:"Seguro desea actualizar token de acceso del usuario "+e,text:"Al actualizar el token del usuario, este no podrá acceder con el token anterior",icon:"warning",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"Si, actualizar!",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&(e=new FormData(this),$.ajax({type:$(this).attr("method"),data:e,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){(e.result?Swal.fire({icon:"success",title:"Token actualizado",text:"Se actualizo correctamente"}):Swal.fire({icon:"error",title:"Error",text:"Hubo un error, no se pudo actualizar el token, refresque la pagina e intente nuevamente, de persistir el problema contacte al administrador"})).then(()=>{setTimeout(()=>{window.location.reload()},100)})}}))})}),$("#cr-saveuser").on("submit",function(e){e.preventDefault();e=new FormData(this);$.ajax({type:$(this).attr("method"),data:e,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){e.result?Swal.fire({icon:"success",title:"Correcto",text:"Se guardo correctamente"}).then(()=>{setTimeout(()=>{window.location.reload()},100)}):"update"===e.result?(Swal.fire({icon:"success",title:"Registro actualizado",text:"El registro ha sido actualizado"}),$("input[id=password]").val("")):Swal.fire({icon:"error",title:"Error!",text:"Hubo un error"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})});
+
+</script>
+
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

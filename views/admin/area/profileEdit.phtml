@@ -1,0 +1,103 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Edita tu perfil</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Actualiza tus datos u contraseña</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-header">
+                    <h3 class="card-title">Cambia los datos que deseas actualizar, presiona cambiar contraseña para cambiar tu contraseña.</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+
+                <div class="card-body">
+                    <a href="<?= SERVERURL ?>pagemanagephatuser/change" class="btn btn-warning btn-flat">Cambiar contraseña</a>
+                </div>
+
+                <form role="form" name="save_reg" id="save_reg" method="post" action="<?= SERVERURL ?>pagemanagephatuser/profile">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" value="<?= $user->usuario ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Nombres</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="<?= $user->nombre ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Apellidos</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" value="<?= $user->apellido ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo</label>
+                            <input type="email" class="form-control" id="correo" name="correo" value="<?= $user->correo_admin ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Repetir correo</label>
+                            <input type="email" class="form-control" id="repetir_correo" name="repetir_correo" value="<?= $user->correo_admin ?>" required>
+                            <span id="resultado_correo" class="help-block"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}" value="<?= $user->tel ?>">
+                        </div>
+
+                        <!-- /.card-body -->
+
+                        <div class="">
+                            <hr>
+                            <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                            <button type="submit" id="edit_profile" class="btn btn-primary">Editar datos</button>
+                        </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+    function isEmail(e){return/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e)}$(document).ready(function(){$("#edit_profile").attr("disabled",!0),$("input[type=text], input[type=email], input[type=tel]").on("keyup",function(){var e=$("#usuario").val(),r=$("#nombre").val(),a=$("#apellido").val(),t=$("#correo").val(),o=isEmail(t);$("#correo").removeClass("is-valid is-invalid"),$("#repetir_correo").removeClass("is-valid is-invalid"),$("#resultado_correo").text(""),$("#resultado_correo").removeClass("valid-feedback invalid-feedback"),$("#repetir_correo").val()===t&&""!=t?($("#correo").addClass("is-valid"),$("#repetir_correo").addClass("is-valid"),$("#resultado_correo").addClass("valid-feedback")):$("#repetir_correo").val()!=t&&($("#resultado_correo").text("Verifique los correos"),$("#correo").addClass("is-invalid"),$("#repetir_correo").addClass("is-invalid"),$("#resultado_correo").addClass("invalid-feedback"),$("#edit_profile").attr("disabled",!0)),""!=t&&$("#repetir_correo").val()===t&&""!=e&&""!=r&&""!=a&&o&&$("#edit_profile").attr("disabled",!1)}),$("#save_reg").on("submit",function(e){e.preventDefault();e=new FormData(this);$.ajax({type:$(this).attr("method"),data:e,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){e.result?Swal.fire({icon:"success",title:"Correcto",text:"Se guardo correctamente"}).then(()=>{setTimeout(()=>{window.location.reload()},100)}):"update"===e.result?(Swal.fire({icon:"success",title:"Registro actualizado",text:"El registro ha sido actualizado"}),$("input[id=password]").val("")):Swal.fire({icon:"error",title:"Error!",text:"Hubo un error"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})});
+</script>
+
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

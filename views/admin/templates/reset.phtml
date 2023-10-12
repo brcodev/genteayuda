@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta name="robots" content="noimageindex, nofollow, noarchive"> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GenteAyuda | recuperar contraseña</title>
+
+  <link rel="stylesheet" href="<?= SERVERURL ?>build/css/user-backup-styles.css">
+  <link rel="stylesheet" href="<?= SERVERURL ?>build/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="<?= SERVERURL ?>build/css/lte-user-app.min.css">
+
+  <script
+			  src="https://code.jquery.com/jquery-3.7.0.min.js"
+			  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+			  crossorigin="anonymous">
+  </script>
+</head>
+
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="../../index2.html" class="h1"><b>Gente</b>Ayuda</a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">Ingresa tu nueva contraseña</p>
+        <form id="res_us" action="<?= SERVERURL ?>/resetaccsysclient/resetValidation" method="post">
+          <div class="input-group mb-3">
+            <input type="password" class="form-control form-control-one validate" id="password" name="password" maxlength="64" required placeholder="Password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" id="repetir_password" name="repetir_password" maxlength="64" placeholder="Confirm Password" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <span id="resultado_password" class="help-block"></span>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <input type="hidden" name="csrf" value="<?= $csrf ?>">
+              <input type="hidden" name="code" value="<?= $code ?>">
+              <button type="submit" id="reset_pass" class="btn btn-primary btn-block">Cambiar contraseña</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+
+        <p class="mt-3 mb-1">
+          <a href="login.html">Login</a>
+        </p>
+
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+    <div class="col-md-14">
+
+      <div class="centro" role="alert">
+        <ul>
+          <li class="requirements leng"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos 6 caracteres.</li>
+          <li class="requirements big-letter"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos una mayúscula </li>
+          <li class="requirements num"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un numero</li>
+          <li class="requirements special-char"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un carácter especial (@, #, !, etc..)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <!-- /.login-box -->
+
+  <script type="text/javascript">
+    
+  $("#reset_pass").attr("disabled",!0);var leng,bigLetter,num,specialChar,server="https://genteayuda.site/",$pass=$(".form-control-one[type='password']"),$passwordAlert=$(".password-alert"),$requirements=$(".requirements"),$leng=$(".leng"),$bigLetter=$(".big-letter"),$num=$(".num"),$specialChar=$(".special-char"),specialChars="!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~",numbers="0123456789";$requirements.addClass("wrong"),$pass.on("focus",function(){$passwordAlert.show()}),$pass.on("input blur",function(s){var e=$(this).val();$passwordAlert.show(),e.length<6?leng=!1:5<e.length&&(leng=!0),bigLetter=e.toLowerCase()!=e,num=!1;for(var a=0;a<e.length;a++)for(var r=0;r<numbers.length;r++)e[a]==numbers[r]&&(num=!0);specialChar=!1;for(a=0;a<e.length;a++)for(r=0;r<specialChars.length;r++)e[a]==specialChars[r]&&(specialChar=!0);console.log(leng,bigLetter,num,specialChar),1==leng&&1==bigLetter&&1==num&&1==specialChar?($(this).addClass("valid").removeClass("invalid"),$requirements.removeClass("wrong").addClass("good"),$passwordAlert.removeClass("alert-warning").addClass("alert-success")):($(this).addClass("invalid").removeClass("valid"),$passwordAlert.removeClass("alert-success"),0==leng?$leng.addClass("wrong").removeClass("good"):$leng.addClass("good").removeClass("wrong"),0==bigLetter?$bigLetter.addClass("wrong").removeClass("good"):$bigLetter.addClass("good").removeClass("wrong"),0==num?$num.addClass("wrong").removeClass("good"):$num.addClass("good").removeClass("wrong"),0==specialChar?$specialChar.addClass("wrong").removeClass("good"):$specialChar.addClass("good").removeClass("wrong")),"blur"==s.type&&$passwordAlert.hide()}),$("input[type=text], input[type=password]").on("keyup",function(){var s=$("#password").val(),e=$("#repetir_password").val();$("#password").removeClass("is-valid is-invalid"),$("#repetir_password").removeClass("is-valid is-invalid"),$("#resultado_password").text(""),$("#resultado_password").removeClass("valid-feedback invalid-feedback"),$("#crear_registro_admin").attr("disabled",!0),$("#repetir_password").val()===s&&""!=$("#password").val()&&""!=$("#repetir_password").val()?($("#resultado_password").text("Las contraseñas coinciden"),$("#password").addClass("is-valid"),$("#repetir_password").addClass("is-valid"),$("#resultado_password").addClass("valid-feedback")):e!=s&&($("#resultado_password").text("Las contraseñas no coinciden"),$("#password").addClass("is-invalid"),$("#repetir_password").addClass("is-invalid"),$("#resultado_password").addClass("invalid-feedback"),$("#crear_registro_admin").attr("disabled",!0)),""!=s&&""!=e&&e===s&&s===e&&1==leng&&1==bigLetter&&1==num&&1==specialChar?$("#reset_pass").attr("disabled",!1):$("#reset_pass").attr("disabled",!0)}),$("#res_us").on("submit",function(s){s.preventDefault();s=$(this).serializeArray();$.ajax({type:$(this).attr("method"),data:s,url:$(this).attr("action"),dataType:"json",success:function(s){s.result?Swal.fire({icon:"success",title:"Su contraseña ha sido cambiada",text:"Ingrese al login para iniciar sesión"}).then(()=>{location.assign(server)}):Swal.fire({icon:"error",title:"Error!",text:"Ocurrió un error, intente nuevamente o póngase en contacto con el administrador"}).then(()=>{setTimeout(()=>{window.location.reload()},200)})}})});
+
+  </script>
+
+  <!-- Bootstrap 4 -->
+  <script src="<?= SERVERURL ?>build/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AdminLTE App -->
+  <script src="<?= SERVERURL ?>build/js/adminlte.min.js"></script>
+  <script src=" //cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</body>
+
+</html>

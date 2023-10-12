@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="robots" content="noimageindex, nofollow, noarchive"> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/lte-user-app.min.css">
+  
+    <!-- DataTables -->
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/responsive.bootstrap4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/select2.min.css">
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/select2-bootstrap4.min.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/daterangepicker.css">
+    <!--Iconos seleccionables en formulario-->
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/fontawesome-iconpicker.min.css">
+    <link rel="stylesheet" href="<?= SERVERURL ?>build/css/lightbox.css">
+
+    <!--summernote edit-->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#"><b>Gente</b>Ayuda</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Inicia Sesión</p>
+
+                <form name="login-admin-form" id="login-admin" method="post" action="<?= SERVERURL ?>loginpageorgphl">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="usuario" name="usuario" maxlength="50" placeholder="Usuario" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password" name="password" maxlength="64" placeholder="Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <!-- /.col -->
+                        <div class="col-12">
+                            <input type="hidden" name="code" value="<?= $code ?>">
+                            <input type="hidden" name="csrf" value="<?= $csrf ?>">
+                            <button type="submit" id="en_login" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <p class="mb-1" style="margin-top: 1rem;">
+                    <a href="<?= SERVERURL ?>recaccsysclient/recover">Olvide mi contraseña</a>
+                </p>
+            </div>
+        
+        <!-- /.login-card-body -->
+        </div>
+
+
+        <?php if (!empty($alert) && $alert != '') : ?>
+            <div class="alerta" style="color:#fff;display:block;font-weight:700;margin-bottom:2rem;padding:0.1rem;text-align:center;width:100%;background-color:#cb0000">
+                <p style="margin-top:1rem"><?= $alert ?></p>
+            </div>
+        <?php endif; ?>
+
+    </div>
+    <!-- /.login-box -->
+
+    <script type="text/javascript">
+       
+       let inputs=document.querySelectorAll("input");document.getElementById("en_login").disabled=!0,inputs.forEach(function(e){e.addEventListener("input",function(){var e=document.getElementById("password").value,n=document.getElementById("usuario").value;document.getElementById("en_login").disabled=""==n||""==e})});
+    
+    </script>
+
+</body>
+
+</html>

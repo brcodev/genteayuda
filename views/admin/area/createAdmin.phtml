@@ -1,0 +1,137 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Crear Administrador</h1>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Crea un nuevo Administrador</h3>
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fas fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="card-header">
+          <h3 class="card-title">Rellena el formulario para crear un nuevo Administrador, los campos con * son obligatorios</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" name="cr-saveuser" id="cr-saveuser" method="post" action="<?= SERVERURL ?>pagemanagephatuser/createadmin" enctype="multipart/form-data">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="usuario">Usuario*</label>
+              <input type="text" class="form-control" id="usuario" name="usuario" pattern="[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+(\s[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+)*"  data-type="checkuser" data-tkn="<?=$csrf?>" onBlur="checkusernameAvailability()" placeholder="Usuario" required>
+              <span id="user_check" class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <label for="nombre">Nombre*</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" pattern="[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+(\s[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+)*" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="apellido">Apellido*</label>
+              <input type="text" class="form-control" id="apellido" name="apellido" pattern="[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+(\s[a-zA-Z\dñÑáéíóúÁÉÍÓÚüÜ]+)*" placeholder="Tu Apellido" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo*</label>
+              <input type="email" class="form-control" id="correo" name="correo" data-type="checkmail" data-tkn="<?=$csrf?>" onBlur="checkemailAvailability()" placeholder="Tu Correo electronico" required>
+              <span id="correo_check" class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Repetir correo*</label>
+              <input type="email" class="form-control" id="repetir_correo" name="repetir_correo" placeholder="Tu correo electronico" required>
+              <span id="resultado_correo" class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Debe contener 9 digitos" required>
+            </div>
+            <?php if ($_SESSION['nivel'] == 2) : ?>
+              <div class="form-group">
+                <label for="type">¿Conceder privilegios avanzados de administrador?</label>
+                <div class="form-group">
+                  <label><input type="checkbox" name="type" id="type" value="priv"> Marcar la casilla para conceder privilegios</label>
+                </div>
+              </div>
+            <?php endif; ?>
+            <div class="input-group mb-3">
+              <input type="password" class="form-control form-control-one validate" id="password" name="password" placeholder="Contraseña" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <input type="password" class="form-control" id="repetir_password" name="repetir_password" placeholder="Confirmar contraseña" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+              <span id="resultado_password" class="help-block"></span>
+            </div>
+            <div class="col-md-14">
+
+              <div class="centro" role="alert">
+                <ul>
+                  <li class="requirements leng"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos 6 caracteres.</li>
+                  <li class="requirements big-letter"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos una mayúscula </li>
+                  <li class="requirements num"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un numero</li>
+                  <li class="requirements special-char"><i class="fas fa-check green-text" style="color : green"></i><i class="fas fa-times red-text" style="color : red"></i> Debe contener al menos un carácter especial (@, #, !, etc..)</li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /.card-body -->
+
+            <div class="">
+              <hr>
+              <input type="hidden" name="csrf" value="<?= $csrf ?>">
+              <button type="submit" class="btn btn-primary" id="crear_registro_admin">Crear Admin</button>
+            </div>
+        </form>
+
+      </div>
+      <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+
+  let server="https://genteayuda.site/pagemanagephatuser/";var leng,bigLetter,num,specialChar,$pass=$(".form-control-one[type='password']"),$passwordAlert=$(".password-alert"),$requirements=$(".requirements"),$leng=$(".leng"),$bigLetter=$(".big-letter"),$num=$(".num"),$specialChar=$(".special-char"),specialChars="!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~",numbers="0123456789",noPass=!0;function checkemailAvailability(){var e=$("#correo").attr("data-type"),a=$("#correo").data("tkn"),r=$("#correo").val();jQuery.ajax({url:"https://genteayuda.site/pagemanagephatuser/createadmin/"+e,data:{email:r,csrf:a},type:"POST",success:function(e){e=JSON.parse(e);0==e.available?($("#correo_check").text("El correo "+r+" ya esta registrado"),$("#correo_check").css("color","red")):1==e.available&&$("#correo_check").text("")},error:function(){}})}function checkusernameAvailability(){var e=$("#usuario").attr("data-type"),a=$("#usuario").data("tkn"),r=$("#usuario").val();jQuery.ajax({url:"https://genteayuda.site/pagemanagephatuser/createadmin/"+e,data:{userc:r,csrf:a},type:"POST",success:function(e){e=JSON.parse(e);0==e.free?($("#user_check").text("El nombre de usuario "+r+" ya esta registrado"),$("#user_check").css("color","red")):1==e.free&&$("#user_check").text("")},error:function(){}})}$requirements.addClass("wrong"),$pass.on("focus",function(){$passwordAlert.show()}),$pass.on("input blur",function(e){var a=$(this).val();$passwordAlert.show(),a.length<6?leng=!1:5<a.length&&(leng=!0),bigLetter=a.toLowerCase()!=a,num=!1;for(var r=0;r<a.length;r++)for(var s=0;s<numbers.length;s++)a[r]==numbers[s]&&(num=!0);specialChar=!1;for(r=0;r<a.length;r++)for(s=0;s<specialChars.length;s++)a[r]==specialChars[s]&&(specialChar=!0);console.log(leng,bigLetter,num,specialChar),1==leng&&1==bigLetter&&1==num&&1==specialChar?($(this).addClass("valid").removeClass("invalid"),$requirements.removeClass("wrong").addClass("good"),$passwordAlert.removeClass("alert-warning").addClass("alert-success")):($(this).addClass("invalid").removeClass("valid"),$passwordAlert.removeClass("alert-success"),0==leng?$leng.addClass("wrong").removeClass("good"):$leng.addClass("good").removeClass("wrong"),0==bigLetter?$bigLetter.addClass("wrong").removeClass("good"):$bigLetter.addClass("good").removeClass("wrong"),0==num?$num.addClass("wrong").removeClass("good"):$num.addClass("good").removeClass("wrong"),0==specialChar?$specialChar.addClass("wrong").removeClass("good"):$specialChar.addClass("good").removeClass("wrong")),"blur"==e.type&&$passwordAlert.hide()}),$("#crear_registro_admin").attr("disabled",!0),$("input[type=text], input[type=password], input[type=email]").on("keyup",function(){var e=$("#password").val(),a=$("#repetir_password").val(),r=$("#usuario").val(),s=$("#nombre").val(),o=$("#apellido").val();noPass=!(0<e.length||0<a.length)||($("#ad_edit").attr("disabled",!0),!1);var t=$("#correo").val();$("#correo").removeClass("is-valid is-invalid"),$("#repetir_correo").removeClass("is-valid is-invalid"),$("#resultado_correo").text(""),$("#resultado_correo").removeClass("valid-feedback invalid-feedback"),$("#repetir_correo").val()===t&&""!=t?($("#correo").addClass("is-valid"),$("#repetir_correo").addClass("is-valid"),$("#resultado_correo").addClass("valid-feedback")):$("#repetir_correo").val()!=t&&($("#resultado_correo").text("Verifique los correos"),$("#correo").addClass("is-invalid"),$("#repetir_correo").addClass("is-invalid"),$("#resultado_correo").addClass("invalid-feedback"),$("#ad_edit").attr("disabled",!0)),$("#password").removeClass("is-valid is-invalid"),$("#repetir_password").removeClass("is-valid is-invalid"),$("#resultado_password").text(""),$("#resultado_password").removeClass("valid-feedback invalid-feedback"),$("#repetir_password").val()===e&&""!=$("#password").val()&&""!=$("#repetir_password").val()?($("#resultado_password").text("Las contraseñas coinciden"),$("#password").addClass("is-valid"),$("#repetir_password").addClass("is-valid"),$("#resultado_password").addClass("valid-feedback")):a!=e&&($("#resultado_password").text("Las contraseñas NO coinciden"),$("#password").addClass("is-invalid"),$("#repetir_password").addClass("is-invalid"),$("#resultado_password").addClass("invalid-feedback")),""!=e&&""!=a&&a===e&&e===a&&1==leng&&1==bigLetter&&1==num&&1==specialChar&&""!=t&&$("#repetir_correo").val()===t&&""!=r&&""!=s&&""!=o?($("#ad_edit").attr("disabled",!1),$("#crear_registro_admin").attr("disabled",!1)):1==noPass&&""!=t&&$("#repetir_correo").val()===t?$("#ad_edit").attr("disabled",!1):($("#ad_edit").attr("disabled",!0),$("#crear_registro_admin").attr("disabled",!0))}),$("#cr-saveuser").on("submit",function(e){e.preventDefault();e=new FormData(this);$.ajax({type:$(this).attr("method"),data:e,url:$(this).attr("action"),dataType:"json",contentType:!1,processData:!1,async:!0,cache:!1,success:function(e){e.result?Swal.fire({icon:"success",title:"Correcto",text:"Se guardo correctamente"}).then(()=>{setTimeout(()=>{window.location.reload()},100)}):"update"===e.result?(Swal.fire({icon:"success",title:"Registro actualizado",text:"El registro ha sido actualizado"}),$("input[id=password]").val("")):Swal.fire({icon:"error",title:"Error!",text:"Hubo un error"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})});
+
+  
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

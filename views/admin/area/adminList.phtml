@@ -1,0 +1,113 @@
+<?php
+
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Listado de Administradores</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Maneja los usuarios de esta sección</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="registros" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Nombre</th>
+                                        <th>Creación</th>
+                                        <th>Priv. avanzados</th>
+                                        <th>Último acceso</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tBody">
+                                    <?php
+                                    foreach ($table as $admin) :
+                                        
+                                        if($admin->usuario != $_ENV['USER_TEST']):
+                                    
+                                    ?>
+
+                                        <tr>
+                                            <td><?= $admin->usuario; ?> </td>
+                                            <td><?= $admin->nombre; ?> </td>
+                                            <td><?= date("d-m-Y H:i", strtotime($admin->fecha_creacion)) ?></td>
+                                            <?php if ($admin->nivel > 1) {
+                                                $level = "Concedido";
+                                            } else {
+                                                $level = "No";
+                                            } ?>
+                                            <td> <?= $level ?></td>
+                                            <td> <?= date("d-m-Y H:i", strtotime($admin->actual_login)) ?></td>
+                                            <td>
+                                                <a href="<?= SERVERURL ?>pagemanagephatuser/adminuser/<?= $admin->usuario; ?>" class="btn btn-flat margin">
+                                                    <i class="far fa-edit"></i>
+                                                </a>
+                                                <a href="#" data-id="<?= $admin->usuario; ?>" data-type="admin" data-user="<?= $admin->usuario; ?>" data-tkn="<?= $csrf ?>" class="btn btn-flat margin del_user_486 ">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </a>
+                                        </tr>
+
+                                    <?php endif;
+                                
+                                    endforeach; ?>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Nombre</th>
+                                        <th>Creación</th>
+                                        <th>Priv. avanzados</th>
+                                        <th>Último acceso</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+    
+    $(document).ready(function(){$(document).on("click",".del_user_486",function(e){e.preventDefault();var t=$("#tBody"),a=$(this).attr("data-id"),r=$(this).attr("data-type"),e=$(this).attr("data-user"),n=$(this).attr("data-tkn"),e="¿Estas Seguro que deseas ELIMINAR registro: "+e+"?";Swal.fire({title:e,text:"Un registro eliminado no se puede recuperar!",icon:"warning",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"Si, ELIMINAR!",cancelButtonText:"Cancelar"}).then(e=>{e.isConfirmed&&$.ajax({type:"post",data:{nameImg:name,id:a,csrf:n},url:"https://genteayuda.site/pagemanagephatuser/userdelad/"+r,success:function(e){e=JSON.parse(e);e.result?(jQuery('[data-id="'+e.user+'"]').parents("tr").remove(),jQuery('[data-image="'+e.image+'"]').parent().remove(),Swal.fire("Eliminado!","El registro ha sido eliminado","success"),0==t.children().length&&window.location.reload()):Swal.fire({icon:"error",title:"Error",text:"No se pudo eliminar el registro, intente nuevamente o contacte al administrador"}).then(()=>{setTimeout(()=>{window.location.reload()},100)})}})})})});
+
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

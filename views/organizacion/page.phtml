@@ -1,0 +1,130 @@
+<?php include_once __DIR__ . '/../layout/header.php'; ?>
+
+<div class="imgorg">
+
+  <div class="fullscreen-container hidden">
+    <div class='fullscreen-div'>
+      <img class="remove-fullscreen" src="<?= SERVERURL; ?>build/icons/remove_icon.webp" width="60" />
+    </div>
+  </div>
+
+  <div id="gallery">
+
+    <div id="slide">
+      <!--<div class="counter"></div>-->
+      <a class="prev">❮</a>
+      <a class="nexti">❯</a>
+      <!--<img class="toggleDiapo" src="SERVERURLbuild/icons/pause_diapo.png" width="40" />-->
+      <!--<img class="fullscreen" src="SERVERURLbuild/icons/fullscreen.png" width="30" /> -->
+      <a href="" data-lightbox="roadtrip" id="light">
+        <img id='preview' />
+      </a>
+    </div>
+
+
+    <div id="thumbnails">
+      <div class="wrapper">
+
+        <p></p>
+        <?php if (!empty($org->url_imagen)) : ?>
+          <img src="<?= SERVERURL . $org->folder_path . $org->url_imagen ?>" class="thumbnail" alt="jQueryScript">
+        <?php endif ?>
+
+
+        <?php
+
+        $dir_path = $org->folder_path; //LA RUTA LA AGREGA A LA PAGINA DE ORGANIZACION NO SE BIEN PORQUE ASI QUE BAJAMOS UN NIVEL EN EL SRC
+        $extensions_array = array('jpg', 'png', 'jpeg');
+
+        if (is_dir($dir_path)) {
+          $files = scandir($dir_path);
+          $ser = SERVERURL;
+
+          for ($i = 0; $i < count($files); $i++) {
+            if ($files[$i] != '.' && $files[$i] != '..' && $files[$i] != $org->url_imagen) {
+              // get file name
+              //echo "File Name -> $files[$i]<br>";
+
+              // get file extension
+              $file = pathinfo($files[$i]);
+              $extension = $file['extension'];
+              //echo "File Extension-> $extension<br>";
+
+              // check file extension
+              if (in_array($extension, $extensions_array)) {
+                // show image
+                echo "<img src='$ser$dir_path$files[$i]' class='thumbnail' alt='jQueryScript'>";
+                if (count($files) - 1 == $i) {
+                  echo "<p></p>";
+                }
+
+                $cont = ($i - 1);
+
+                $light[] = "<a href='$ser$dir_path$files[$i]' data-index='$cont' data-lightbox='roadtrip' class='unselected' style='display : none;'>$cont</a>"; //BAJAMOS UN NIVEL PARA IR ATRAS, HTACCESS  COMO LO DEFINIMOS HACE QUE ORGANIZACION SEA COMO UN NIVEL SIMBOLICO.
+
+                //echo "<img src='$dir_path$files[$i]' style='width:100px;height:100px;'><br>";
+              }
+            }
+          }
+        }
+
+        ?>
+
+      </div>
+    </div>
+    <div class="lista">
+      <?php if (!empty($org->url_imagen)) : ?>
+        <a href="<?= SERVERURL . $org->folder_path . $org->url_imagen ?>" data-index="1" data-lightbox="roadtrip" class="unselected" style="display : none;">1</a>
+      <?php endif ?>
+      <?php foreach ($light as $href) {
+        echo $href;
+      } ?>
+    </div>
+
+  </div>
+
+  <div class="descripcion">
+    <h3><?= $org->nombre_organizacion ?></h3>
+    <p><?= $org->descripcion_organizacion ?? ''; ?></p>
+
+    <h3>Contacto</h3>
+    <div class="contacto-org">
+      <?php if (!empty($org->telefono_org)) : ?>
+        <p><i class="fas fa-phone c-icon"></i> : <?= $org->telefono_org; ?> </p>
+      <?php endif; ?>
+      <p><i class="fas fa-envelope c-icon"></i> <?= $org->correo_org; ?></p>
+      <?php if (!empty($org->direccion_org)) : ?>
+      <p><i class="fas fa-map-marked-alt c-icon"></i> <?= $org->direccion_org; ?></p>
+      <?php endif; ?>
+    </div>
+
+    <?php if (!empty($org->in_link) || !empty($org->fb_link) || !empty($org->tw_link)) : ?>
+      <h3>Redes Sociales</h3>
+    <?php endif; ?>
+    <?php if (!empty($org->in_link) && !empty($org->fb_link) && !empty($org->tw_link)) {
+      $all = true;
+      $addAll = "-all";
+    } ?>
+
+    <div class="contacto-org-social<?= $addAll ?>">
+
+      <?php if (!empty($org->in_link)) : ?>
+        <a href="<?= $org->in_link ?>"><i class="fa-brands fa-instagram social"></i></a>
+      <?php endif; ?>
+      <?php if (!empty($org->fb_link)) : ?>
+        <a href="<?= $org->fb_link ?>"><i class="fa-brands fa-facebook social""></i></a>
+        <?php endif; ?>  
+        <?php if (!empty($org->tw_link)) : ?>
+          <a href=" <?= $org->tw_link ?>"><i class="fa-brands fa-twitter social""></i></a>
+        <?php endif; ?> 
+      </div> 
+    </div>
+
+  
+
+
+</div>
+
+
+
+<?php include_once __DIR__ . '/../layout/footer.php'; ?>   

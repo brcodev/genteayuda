@@ -1,0 +1,38 @@
+<?php
+
+include_once __DIR__ . '/../templates/header.php';
+include_once __DIR__ . '/../templates/barra.php';
+include_once __DIR__ . '/../templates/navegacion.php';
+
+?>
+
+<div class="content-wrapper">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                 <i class="fa-solid fa-folder-open"></i>
+                  Detalles Sugerencia N° <?= $detail->id ?>
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <dl class="row">
+                  <dt class="col-sm-4">ID de sugerencia</dt>
+                  <dd class="col-sm-8"><?= $detail->id ?></dd>
+                  <dt class="col-sm-4">Nombre</dt>
+                  <dd class="col-sm-8"><?= $detail->nombre." ".$detail->apellido ?></dd>
+                  <dt class="col-sm-4">Email</dt>
+                  <dd class="col-sm-8"><?= $detail->mail ?></dd>
+                  <dt class="col-sm-4">Fecha de ingreso sugerencia:</dt>
+                  <dd class="col-sm-8"><?= date("d-m-Y H:i:s", strtotime($detail->create_date)) ?></dd>
+                  <dt class="col-sm-4">Sugerencia</dt>
+                  <dd class="col-sm-8"><?= $detail->mensaje ?></dd>
+                </dl>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+
+<?php  include_once __DIR__ . '/../templates/footer.php'; ?>
