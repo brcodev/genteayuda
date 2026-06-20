@@ -3,7 +3,6 @@
 
 ## Descripción.
 
-[https://genteayuda.site](https://genteayuda.site)
 
 
 Genteayuda es el primer proyecto que realice el cual desplegué en un servidor, donde pude practicar con un entorno en producción, realizando las configuraciones necesarias para su correcto funcionamiento. El fin de este proyecto educativo es la realización de una aplicación web demostrativa en donde organizaciones sociales puedan inscribirse y publicar información de contacto y eventos que entreguen algún tipo de ayuda. La aplicación web fue programada con PHP nativo, con la arquitectura MVC implementando un ORM personalizado para mayor eficacia de operación en las consultas realizadas a la base de datos, la cual es administrada con el gestor de base de datos MySQL.
